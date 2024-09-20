@@ -17,7 +17,7 @@ class LoginService {
         }),
       );
 
-      if (response.statusCode == 201) {
+      if (response.statusCode == 200) {
         // Decode and return the JSON response
         return jsonDecode(response.body);
       } else {
