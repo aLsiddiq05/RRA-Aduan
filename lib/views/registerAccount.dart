@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/services.dart';
-import 'package:http/http.dart';
 import 'package:rra_mobile/services/registerservice.dart';
-import 'login.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 // Data class to represent a form field
