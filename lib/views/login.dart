@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/services.dart';
-// import 'package:http/http.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:rra_mobile/page/homepage.dart';
 import 'package:rra_mobile/services/loginservice.dart';
 import 'forgotPassword.dart';
@@ -21,6 +21,7 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController _passwordController = TextEditingController();
   bool _isLoading = false;
   bool _isPasswordVisible = false;
+  final storage = const FlutterSecureStorage();
 
   @override
   void initState() {
@@ -40,7 +41,7 @@ class _LoginPageState extends State<LoginPage> {
   }
 
 //api intergration login
- void _login() async {
+  void _login() async {
     if (_formKey.currentState!.validate()) {
       setState(() {
         _isLoading = true;
@@ -57,13 +58,21 @@ class _LoginPageState extends State<LoginPage> {
       });
 
       if (result != null) {
+        final roleId  = result['roleId'];
+        if (roleId == 3) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Log Masuk Berjaya')),
+          );
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => const HomePage()),
+          );
+        } else {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Log Masuk Berjaya')),
+          const SnackBar(content: Text('Login failed')),
         );
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => const HomePage()),
-        );
+      }
+        
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Login failed')),
@@ -71,7 +80,6 @@ class _LoginPageState extends State<LoginPage> {
       }
     }
   }
-
 
   // Custom input decoration for form fields
   InputDecoration customInputDecoration({
@@ -187,7 +195,7 @@ class _LoginPageState extends State<LoginPage> {
                       children: <Widget>[
                         buildTextFormField(
                           controller: _idController,
-                          label: 'ID Pengguna',
+                          label: 'Email Pengguna',
                           prefixIcon: const Icon(Icons.person),
                           // keyboardType: TextInputType.number,
                           // inputFormatters: [

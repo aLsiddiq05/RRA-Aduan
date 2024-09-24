@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
+
 class LoginService {
   final String url = 'http://localhost:3000/auth/login';
 
@@ -19,7 +20,8 @@ class LoginService {
 
       if (response.statusCode == 200) {
         // Decode and return the JSON response
-        return jsonDecode(response.body);
+        final res = jsonDecode(response.body); 
+        return res;
       } else {
         // Handle non-201 responses
         print('Failed to login: ${response.statusCode}');

@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:rra_mobile/views/login.dart';
-import 'package:rra_mobile/widget/borangMB.dart';
+import 'package:rra_mobile/widget/allAduan.dart';
+// import 'package:rra_mobile/widget/borangMB.dart';
 import 'package:rra_mobile/widget/customappbar.dart';
-import 'package:rra_mobile/widget/dashboard.dart';
+// import 'package:rra_mobile/widget/dashboard.dart';
 import 'package:rra_mobile/widget/info.dart';
 import 'package:rra_mobile/widget/profile.dart';
+import 'package:rra_mobile/widget/statusbutton.dart';
 import 'package:rra_mobile/widget/userIntro.dart';
 
 class HomePage extends StatefulWidget {
@@ -25,7 +27,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   static const List<Widget> _pages = <Widget>[
-    Dashboard(),
+    AllAduan(),
     Informasi(),
     Profil(),
   ];
@@ -57,11 +59,12 @@ class _HomePageState extends State<HomePage> {
                 color: Colors.white,
               ))
         ],
-        content: _selectedIndex == 0 ?Container(
-          child: Column(
+        content: _selectedIndex == 0 ? Container(
+          child: const Column(
             children: [
-              UserIntro(),
-              BorangMB(),
+              UserIntro(), // user profile
+              // BorangMB(),
+              ShowStatus() // tukar jadi status
             ],
           ),
         ): null
