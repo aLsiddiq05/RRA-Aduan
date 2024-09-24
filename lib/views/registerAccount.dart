@@ -4,7 +4,6 @@ import 'package:flutter/services.dart';
 import 'package:rra_mobile/services/registerservice.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-// Data class to represent a form field
 class FormFieldData {
   final String label;
   final Icon icon;
@@ -31,15 +30,12 @@ class _RegisterAccountPageState extends State<RegisterAccountPage> {
   bool _isPasswordVisible = false;
   bool _isConfirmPasswordVisible = false;
 
-// List of form fields to be displayed
   final List<FormFieldData> _fields = [
     FormFieldData(
         label: 'No. Kad Pengenalan',
         icon: const Icon(FontAwesomeIcons.idCard),
         isNumber: true),
     FormFieldData(label: 'Nama', icon: const Icon(Icons.person)),
-    FormFieldData(
-        label: 'No. Telefon Bimbit', icon: const Icon(Icons.phone), isNumber: true),
     FormFieldData(label: 'E-mel', icon: const Icon(Icons.email)),
     FormFieldData(label: 'ID Pengguna', icon: const Icon(Icons.person)),
     FormFieldData(
@@ -55,22 +51,23 @@ class _RegisterAccountPageState extends State<RegisterAccountPage> {
     super.initState();
     _fields.forEach((field) {
       _controllers[field.label] = TextEditingController();
-      _controllers[field.label]!.addListener(() {
-        if (_formKey.currentState?.validate() ?? false) {
-          setState(() {});
-        }
+    });
+
+    // Sync "ID Pengguna" with "No. Kad Pengenalan"
+    _controllers['No. Kad Pengenalan']!.addListener(() {
+      final noKadValue = _controllers['No. Kad Pengenalan']!.text;
+      setState(() {
+        _controllers['ID Pengguna']!.text = noKadValue;
       });
     });
   }
 
   @override
   void dispose() {
-    // Dispose all controllers when the widget is removed
     _controllers.values.forEach((controller) => controller.dispose());
     super.dispose();
   }
 
-  // Custom box decoration for the form fields
   BoxDecoration _customBoxDecoration() {
     return BoxDecoration(
       color: Colors.grey[200],
@@ -85,7 +82,6 @@ class _RegisterAccountPageState extends State<RegisterAccountPage> {
     );
   }
 
-  // Custom input decoration for the form fields
   InputDecoration _customInputDecoration({
     required String label,
     required Icon prefixIcon,
@@ -114,14 +110,11 @@ class _RegisterAccountPageState extends State<RegisterAccountPage> {
           nama: _controllers['Nama']!.text,
           katalaluan: _controllers['Kata Laluan']!.text,
           emel: _controllers['E-mel']!.text,
-          noTelBimbit: _controllers['No. Telefon Bimbit']!.text,
         );
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Akaun berjaya didaftar')),
         );
-        Navigator.pushReplacementNamed(
-          context, '/login'
-        );
+        Navigator.pushReplacementNamed(context, '/login');
       } catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Pendaftaran gagal: ${e.toString()}')),
@@ -134,16 +127,36 @@ class _RegisterAccountPageState extends State<RegisterAccountPage> {
     }
   }
 
+  String? _validateField(FormFieldData field, String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Sila masukkan ${field.label.toLowerCase()}';
+    }
 
-// Method to build each text field
+    if (field.label == 'No. Kad Pengenalan') {
+      if (value.length != 12) {
+        return 'No. Kad Pengenalan mesti mengandungi 12 nombor';
+      }
+    }
+
+    if (field.label == 'E-mel' &&
+        !RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(value)) {
+      return 'Format e-mel tidak sah';
+    }
+
+    if (field.label == 'Pastikan Kata Laluan' &&
+        value != _controllers['Kata Laluan']!.text) {
+      return 'Kata laluan tidak sepadan';
+    }
+
+    return null;
+  }
+
   Widget _buildTextField(FormFieldData field) {
-    final isPassword = field.isPassword; // Check if the field is for password
-    final controller =
-        _controllers[field.label]!; // Get the controller for the field
-    TextInputType keyboardType = TextInputType.text; // Default keyboardType
+    final isPassword = field.isPassword;
+    final controller = _controllers[field.label]!;
+    TextInputType keyboardType = TextInputType.text;
     List<TextInputFormatter>? inputFormatters;
 
-    // Set keyboardType and inputFormatters based on field type
     if (field.isNumber) {
       keyboardType = TextInputType.number;
       inputFormatters = [FilteringTextInputFormatter.digitsOnly];
@@ -172,6 +185,7 @@ class _RegisterAccountPageState extends State<RegisterAccountPage> {
                     : _isPasswordVisible),
             keyboardType: keyboardType,
             inputFormatters: inputFormatters,
+            enabled: field.label != 'ID Pengguna',
             decoration: _customInputDecoration(
               label: field.label,
               prefixIcon: field.icon,
@@ -199,27 +213,13 @@ class _RegisterAccountPageState extends State<RegisterAccountPage> {
                     )
                   : null,
             ),
-            validator: (value) {
-              if (value == null || value.isEmpty) {
-                return 'Sila masukkan ${field.label.toLowerCase()}';
-              }
-              if (field.label == 'E-mel' &&
-                  !RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(value)) {
-                return 'Format e-mel tidak sah';
-              }
-              if (field.label == 'Pastikan Kata Laluan' &&
-                  value != _controllers['Kata Laluan']!.text) {
-                return 'Kata laluan tidak sepadan';
-              }
-              return null;
-            },
+            validator: (value) => _validateField(field, value),
           ),
         ),
       ),
     );
   }
 
-  // Method to build section headers
   Widget _buildSectionHeader(String title) {
     return Container(
       color: Colors.blueGrey[50],
@@ -255,8 +255,7 @@ class _RegisterAccountPageState extends State<RegisterAccountPage> {
           padding: const EdgeInsets.all(16.0),
           child: Form(
             key: _formKey,
-            autovalidateMode:
-                AutovalidateMode.onUserInteraction, // Enable auto-validation
+            autovalidateMode: AutovalidateMode.onUserInteraction,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
@@ -268,24 +267,22 @@ class _RegisterAccountPageState extends State<RegisterAccountPage> {
                 _buildSectionHeader('Profil'),
                 const SizedBox(height: 20),
                 ..._fields
-                    .sublist(0, 4)
+                    .sublist(0, 3)
                     .map((field) => _buildTextField(field))
                     .toList(),
                 const SizedBox(height: 20),
                 _buildSectionHeader('Maklumat Log Masuk'),
                 const SizedBox(height: 20),
                 ..._fields
-                    .sublist(4)
+                    .sublist(3)
                     .map((field) => _buildTextField(field))
                     .toList(),
                 const SizedBox(height: 20),
                 Center(
                   child: ElevatedButton(
-                    onPressed: _isLoading
-                        ? null
-                        : _register, // Disable button if loading
+                    onPressed: _isLoading ? null : _register,
                     child: _isLoading
-                        ? const CircularProgressIndicator() // Show progress indicator if loading
+                        ? const CircularProgressIndicator()
                         : const Text('Daftar'),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.blue[900],
