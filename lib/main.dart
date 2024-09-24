@@ -18,25 +18,23 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: const Color.fromARGB(255, 0, 67, 122)),
+        colorScheme: ColorScheme.fromSeed(
+            seedColor: const Color.fromARGB(255, 0, 67, 122)),
         useMaterial3: true,
       ),
       initialRoute: '/login',
       routes: {
-        '/login':(context) => const LoginPage(),
-        '/mbAduan':(context) => MaklumBalas(title: 'Aduan', initial: "A", backgroundColor: Colors.red[100]!, textColor: Colors.red[800]!, lokasi: true),
-        '/mbTanya':(context) => MaklumBalas(title: 'Pertanyaan', initial: "T", backgroundColor: Colors.amber[100]!, textColor: Colors.amber[800]!,lokasi: true),
-        '/mbPenghargaan':(context) => MaklumBalas(title: 'Penghargaan',initial: "C", backgroundColor: Colors.green[100]!, textColor: Colors.green[800]!, lokasi: false,),
-        '/mbCadang':(context) => MaklumBalas(title: 'Cadangan', initial: "P", backgroundColor: Colors.blue[100]!, textColor: Colors.blue[800]!,lokasi: false,),
-        '/noti':(context) => const Noti(),
-        '/mrr':(context) => const JustAPage(title: 'Mengenai Respons Rakyat', num: 0),
-        '/ta':(context) => const JustAPage(title: 'Takrifan Aduan/Maklum Balas', num: 1),
-        '/bk':(context) => const JustAPage(title: 'Bidang Kuasa', num: 2),
-        '/mbpa':(context) => const JustAPage(title: 'Mengenai BPA', num: 3),
-        '/tnc':(context) => const JustAPage(title: 'Terma & Syarat', num: 4),
-        '/call':(context) => const JustAPage(title: 'Hubungi Kami', num: 5),
+        '/login': (context) => const LoginPage(),
+        '/noti': (context) => const Noti(),
+        '/mrr': (context) =>
+            const JustAPage(title: 'Mengenai Respons Rakyat', num: 0),
+        '/ta': (context) =>
+            const JustAPage(title: 'Takrifan Aduan/Maklum Balas', num: 1),
+        '/bk': (context) => const JustAPage(title: 'Bidang Kuasa', num: 2),
+        '/mbpa': (context) => const JustAPage(title: 'Mengenai BPA', num: 3),
+        '/tnc': (context) => const JustAPage(title: 'Terma & Syarat', num: 4),
+        '/call': (context) => const JustAPage(title: 'Hubungi Kami', num: 5),
       },
     );
   }
 }
-
