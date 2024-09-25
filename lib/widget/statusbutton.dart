@@ -17,7 +17,7 @@ class ShowStatus extends StatelessWidget {
             child: Card(
               color: const Color.fromARGB(255, 169, 190, 200),
               child: Padding(
-                padding: EdgeInsets.all(8.0),
+                padding: const EdgeInsets.all(8.0),
                 child: GestureDetector(
                   child: const Column(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -39,7 +39,7 @@ class ShowStatus extends StatelessWidget {
             child: Card(
               color: Colors.blueAccent,
               child: Padding(
-                padding: EdgeInsets.all(8.0),
+                padding: const EdgeInsets.all(8.0),
                 child: GestureDetector(
                   child:const  Column(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -61,7 +61,7 @@ class ShowStatus extends StatelessWidget {
             child: Card(
               color: Colors.green,
               child: Padding(
-                padding: EdgeInsets.all(8.0),
+                padding: const EdgeInsets.all(8.0),
                 child: GestureDetector(
                   child: const Column(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -83,7 +83,7 @@ class ShowStatus extends StatelessWidget {
             child: Card(
               color: Colors.redAccent,
               child: Padding(
-                padding: EdgeInsets.all(8.0),
+                padding: const EdgeInsets.all(8.0),
                 child: GestureDetector(
                   child: const Column(
                     mainAxisAlignment: MainAxisAlignment.center,

@@ -19,6 +19,8 @@ class FormFieldData {
 }
 
 class RegisterAccountPage extends StatefulWidget {
+  const RegisterAccountPage({super.key});
+
   @override
   _RegisterAccountPageState createState() => _RegisterAccountPageState();
 }
@@ -49,9 +51,9 @@ class _RegisterAccountPageState extends State<RegisterAccountPage> {
   @override
   void initState() {
     super.initState();
-    _fields.forEach((field) {
+    for (var field in _fields) {
       _controllers[field.label] = TextEditingController();
-    });
+    }
 
     // Sync "ID Pengguna" with "No. Kad Pengenalan"
     _controllers['No. Kad Pengenalan']!.addListener(() {
@@ -64,7 +66,9 @@ class _RegisterAccountPageState extends State<RegisterAccountPage> {
 
   @override
   void dispose() {
-    _controllers.values.forEach((controller) => controller.dispose());
+    for (var controller in _controllers.values) {
+      controller.dispose();
+    }
     super.dispose();
   }
 
@@ -244,7 +248,7 @@ class _RegisterAccountPageState extends State<RegisterAccountPage> {
         backgroundColor: Colors.blue[900],
         foregroundColor: Colors.white,
         leading: GestureDetector(
-          child: Icon(Icons.arrow_back),
+          child: const Icon(Icons.arrow_back),
           onTap: () {
             Navigator.pushReplacementNamed(context, '/login');
           },
@@ -281,9 +285,6 @@ class _RegisterAccountPageState extends State<RegisterAccountPage> {
                 Center(
                   child: ElevatedButton(
                     onPressed: _isLoading ? null : _register,
-                    child: _isLoading
-                        ? const CircularProgressIndicator()
-                        : const Text('Daftar'),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.blue[900],
                       foregroundColor: Colors.white,
@@ -292,6 +293,9 @@ class _RegisterAccountPageState extends State<RegisterAccountPage> {
                         borderRadius: BorderRadius.circular(10.0),
                       ),
                     ),
+                    child: _isLoading
+                        ? const CircularProgressIndicator()
+                        : const Text('Daftar'),
                   ),
                 ),
               ],

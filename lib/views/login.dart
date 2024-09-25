@@ -21,7 +21,7 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController _passwordController = TextEditingController();
   bool _isLoading = false;
   bool _isPasswordVisible = false;
-  final storage = new FlutterSecureStorage();
+  final storage = const FlutterSecureStorage();
 
   @override
   void initState() {
@@ -103,8 +103,8 @@ class _LoginPageState extends State<LoginPage> {
     return BoxDecoration(
       color: Colors.grey[200],
       borderRadius: BorderRadius.circular(15.0),
-      boxShadow: [
-        const BoxShadow(
+      boxShadow: const [
+        BoxShadow(
           color: Colors.black26,
           blurRadius: 8,
           offset: Offset(0, 8),
@@ -140,7 +140,7 @@ class _LoginPageState extends State<LoginPage> {
       child: DottedBorder(
         borderType: BorderType.RRect,
         radius: const Radius.circular(15.0),
-        dashPattern: [5, 3],
+        dashPattern: const [5, 3],
         color: Colors.grey,
         child: Container(
           width: 350,
@@ -228,17 +228,17 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ),
                   const SizedBox(height: 20),
-                  Container(
+                  SizedBox(
                     width: 350,
                     child: ElevatedButton(
                       onPressed: _isLoading ? null : _login,
-                      child: _isLoading
-                          ? const CircularProgressIndicator()
-                          : const Text('Log Masuk'),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.blue[900],
                         foregroundColor: Colors.white,
                       ),
+                      child: _isLoading
+                          ? const CircularProgressIndicator()
+                          : const Text('Log Masuk'),
                     ),
                   ),
                   const SizedBox(height: 20),

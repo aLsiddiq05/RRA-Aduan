@@ -4,6 +4,8 @@ import 'package:flutter/services.dart';
 import 'login.dart';
 
 class ForgotPasswordPage extends StatefulWidget {
+  const ForgotPasswordPage({super.key});
+
   @override
   _ForgotPasswordPageState createState() => _ForgotPasswordPageState();
 }
@@ -22,7 +24,9 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
 
   @override
   void dispose() {
-    _controllers.values.forEach((controller) => controller.dispose());
+    for (var controller in _controllers.values) {
+      controller.dispose();
+    }
     super.dispose();
   }
 
@@ -216,9 +220,6 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                 Center(
                   child: ElevatedButton(
                     onPressed: _isLoading ? null : _submit,
-                    child: _isLoading
-                        ? const CircularProgressIndicator()
-                        : const Text('Hantar'),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.blue[900],
                       foregroundColor: Colors.white,
@@ -227,6 +228,9 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                         borderRadius: BorderRadius.circular(10.0),
                       ),
                     ),
+                    child: _isLoading
+                        ? const CircularProgressIndicator()
+                        : const Text('Hantar'),
                   ),
                 ),
               ],
