@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 
-
 class LoginService {
   final String url = 'http://localhost:3000/auth/login';
   final storage = const FlutterSecureStorage();
@@ -22,7 +21,7 @@ class LoginService {
 
       if (response.statusCode == 200) {
         // Decode and return the JSON response
-        final res = jsonDecode(response.body); 
+        final res = jsonDecode(response.body);
         await storage.write(key: 'roleId', value: res['roleId'].toString());
         await storage.write(key: 'token', value: res['access_token']);
         return res;
