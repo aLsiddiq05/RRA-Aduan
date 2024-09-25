@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:rra_mobile/page/maklumbalas.dart';
 import 'package:rra_mobile/views/login.dart';
 import 'package:rra_mobile/widget/allAduan.dart';
@@ -18,6 +19,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int _selectedIndex = 0;
+  final storage = const FlutterSecureStorage();
 
   void _onItemTapped(int index) {
     setState(() {
@@ -30,6 +32,11 @@ class _HomePageState extends State<HomePage> {
     Informasi(),
     Profil(),
   ];
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -48,8 +55,9 @@ class _HomePageState extends State<HomePage> {
                 color: Colors.white,
               )),
           IconButton(
-              onPressed: () {
+              onPressed: () async {
                 print("logout button");
+                await storage.deleteAll();
                 Navigator.pushReplacement(context,
                     MaterialPageRoute(builder: (context) => const LoginPage()));
               },

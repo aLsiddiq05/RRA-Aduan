@@ -79,13 +79,17 @@ class _MaklumBalasState extends State<MaklumBalas> {
           actions: [
             TextButton(
               onPressed: () {
+                Navigator.pushAndRemoveUntil(
+                  context, 
+                  MaterialPageRoute(builder: (context) => const HomePage(),), 
+                  (Route<dynamic> route) => false);
                 // Navigate back to HomePage
-                Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(
-                    builder: (context) =>
-                        const HomePage(), // Assuming HomePage is in the same file or imported
-                  ),
-                );
+                // Navigator.of(context).pushReplacement(
+                //   MaterialPageRoute(
+                //     builder: (context) =>
+                //         const HomePage(), // Assuming HomePage is in the same file or imported
+                //   ),
+                // );
               },
               child: const Text('Close'),
             ),

@@ -68,7 +68,6 @@ Future<AduanResponse?> fetchAduans(int page, int status) async {
     );
 
     if (res.statusCode == 200) {
-      print('res body:${res.body}');
       return AduanResponse.fromJson(jsonDecode(res.body));
     } else {
       print('Failed to load aduan');

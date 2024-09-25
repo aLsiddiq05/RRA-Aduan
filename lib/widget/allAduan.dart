@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:rra_mobile/services/allAduanService.dart';
 
 class AllAduan extends StatefulWidget {
@@ -83,7 +84,13 @@ class _AllAduanState extends State<AllAduan> {
                         child: ListTile(
                           title: Text(aduan.title),
                           subtitle: Text(aduan.content),
-                          trailing: Text(aduan.createdAt.toString()),
+                          trailing: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(DateFormat('dd/MM/yyyy').format(DateTime.fromMillisecondsSinceEpoch(aduan.createdAt * 1000))),
+                              Text(DateFormat('hh:mm a').format(DateTime.fromMillisecondsSinceEpoch(aduan.createdAt * 1000))),
+                            ],
+                          )
                         ),
                       );
                     },
