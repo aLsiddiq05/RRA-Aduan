@@ -61,7 +61,25 @@ class _AllAduanState extends State<AllAduan> {
                     itemCount: _aduans.length,
                     itemBuilder: (context, index) {
                       final aduan = _aduans[index];
+                      Color cardColor;
+                      switch (aduan.status) {
+                        case 1:
+                          cardColor = Colors.grey;
+                          break;
+                        case 2:
+                          cardColor = Colors.blueAccent;
+                          break;
+                        case 3:
+                          cardColor = Colors.greenAccent;
+                          break;
+                        case 4:
+                          cardColor = Colors.redAccent;
+                          break;
+                        default:
+                          cardColor = Colors.white;
+                      }
                       return Card(
+                        color: cardColor,
                         child: ListTile(
                           title: Text(aduan.title),
                           subtitle: Text(aduan.content),
