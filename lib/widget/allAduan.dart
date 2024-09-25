@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-// import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
+import 'package:rra_mobile/services/allAduanService.dart';
 
 class AllAduan extends StatefulWidget {
   const AllAduan({super.key});
@@ -9,76 +9,97 @@ class AllAduan extends StatefulWidget {
 }
 
 class _AllAduanState extends State<AllAduan> {
+  List<Aduan> _aduans = [];
+  final int _activeStatus = 0;
+  int _currentPage = 1;
+  bool _isLoading = false;
+  bool _hasMoreData = true;
 
-  // static const _pageSize = 20;
+  @override
+  void initState() {
+    super.initState();
+    _loadMyAduan();
+  }
 
-  //  final PagingController<int, aduans> _pagingController =
-  //     PagingController(firstPageKey: 0);
+  Future<void> _loadMyAduan() async {
+    if (_isLoading || !_hasMoreData) return;
 
-  // @override
-  // void initState() {
-  //   _pagingController.addPageRequestListener((pageKey) {
-  //     _fetchPage(pageKey);
-  //   });
-  //   super.initState();
-  // }
+    setState(() {
+      _isLoading = true;
+    });
 
-  //  Future<void> _fetchPage(int pageKey) async {
-  //   try {
-  //     final newItems = await RemoteApi.getBeerList(pageKey, _pageSize);
-  //     final isLastPage = newItems.length < _pageSize;
-  //     if (isLastPage) {
-  //       _pagingController.appendLastPage(newItems);
-  //     } else {
-  //       final nextPageKey = pageKey + newItems.length;
-  //       _pagingController.appendPage(newItems, nextPageKey);
-  //     }
-  //   } catch (error) {
-  //     _pagingController.error = error;
-  //   }
-  // }
+    final res = await fetchAduans(_currentPage, _activeStatus);
+
+    if (res != null) {
+      print('load success');
+      setState(() {
+        _aduans.addAll(res.result);
+        _currentPage = res.currentPage + 1;
+      });
+    } else {
+      print('Failed to load aduan');
+      setState(() {
+        _hasMoreData = false;
+      });
+    }
+    setState(() {
+      _isLoading = false;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    return const SingleChildScrollView(
-      child: Padding(
-        padding: EdgeInsets.all(10),
-        child: Column(
-          children: [
-            Card(
-              child: ListTile(
-                title: Text("Tajuk"),
-                subtitle: Text("content"),
-                trailing: Text("Status"),
-              ),
+    return Padding(
+      padding: const EdgeInsets.all(10),
+      child: Column(
+        children: <Widget>[
+          SizedBox(
+            height: 400,
+            child: _aduans.isEmpty && !_isLoading
+                ? Center(child: Text('No Aduan Available.'))
+                : ListView.builder(
+                    itemCount: _aduans.length,
+                    itemBuilder: (context, index) {
+                      final aduan = _aduans[index];
+                      Color cardColor;
+                      switch (aduan.status) {
+                        case 1:
+                          cardColor = Colors.grey;
+                          break;
+                        case 2:
+                          cardColor = Colors.blueAccent;
+                          break;
+                        case 3:
+                          cardColor = Colors.greenAccent;
+                          break;
+                        case 4:
+                          cardColor = Colors.redAccent;
+                          break;
+                        default:
+                          cardColor = Colors.white;
+                      }
+                      return Card(
+                        color: cardColor,
+                        child: ListTile(
+                          title: Text(aduan.title),
+                          subtitle: Text(aduan.content),
+                          trailing: Text(aduan.createdAt.toString()),
+                        ),
+                      );
+                    },
+                  ),
+          ),
+          if (_isLoading)
+            const Center(
+              child: CircularProgressIndicator(),
             ),
-            Card(
-              color: Colors.green,
-              child: ListTile(
-                title: Text("Tajuk"),
-                subtitle: Text("content"),
-                trailing: Text("Status"),
-              ),
+          if (_hasMoreData && !_isLoading)
+            ElevatedButton(
+              onPressed: _loadMyAduan,
+              child: const Text('Load More'),
             ),
-             Card(
-              color: Colors.blueAccent,
-              child: ListTile(
-                title: Text("Tajuk"),
-                subtitle: Text("content"),
-                trailing: Text("Status"),
-              ),
-            ),
-             Card(
-              color: Colors.redAccent,
-              child: ListTile(
-                title: Text("Tajuk"),
-                subtitle: Text("content"),
-                trailing: Text("Status"),
-              ),
-            ),
-          ],
-        ),
-        ),
+        ],
+      ),
     );
   }
 }

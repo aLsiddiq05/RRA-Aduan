@@ -8,7 +8,7 @@ class Informasi extends StatelessWidget {
     return Column(
       children: [
         Padding(
-          padding: EdgeInsets.all(20),
+          padding: const EdgeInsets.all(20),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -114,7 +114,7 @@ class Informasi extends StatelessWidget {
                   ),
                 ],
               ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               Column(
@@ -129,7 +129,7 @@ class Informasi extends StatelessWidget {
                   ),
                   ListTile(
                     leading: Image.asset('assets/img6.png', width: 30, height: 30,),
-                    title: Text('v 2.6.8'),
+                    title: const Text('v 2.6.8'),
                   )
                 ],
               )

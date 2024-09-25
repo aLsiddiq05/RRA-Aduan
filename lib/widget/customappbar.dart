@@ -6,7 +6,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final List<Widget> actions;
   final Widget? content;
 
-  const CustomAppBar({
+  const CustomAppBar({super.key, 
     required this.title,
     this.backgroundColor = const Color(0xFF0D47A1),
     this.actions = const[],
@@ -22,7 +22,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       actions: actions,
       bottom: content != null
         ? PreferredSize(
-            preferredSize: Size.fromHeight(100), 
+            preferredSize: const Size.fromHeight(100), 
             child: content!)
         : null,
     );

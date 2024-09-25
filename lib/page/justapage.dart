@@ -6,7 +6,7 @@ class JustAPage extends StatefulWidget {
   final String title;
   final int num;
 
-  const JustAPage({required this.title, required this.num});
+  const JustAPage({super.key, required this.title, required this.num});
 
   @override
   State<JustAPage> createState() => _JustAPageState();
@@ -223,7 +223,7 @@ class _JustAPageState extends State<JustAPage> {
       color: Colors.blue[900],
       fontSize: 16, // Adjust the font size as needed
     ),
-    children: [
+    children: const [
       TextSpan(
         text: 'Biro Pengaduan Awam',
         style: TextStyle(fontWeight: FontWeight.bold),

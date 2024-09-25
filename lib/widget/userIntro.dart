@@ -6,7 +6,7 @@ class UserIntro extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 10),
+      margin: const EdgeInsets.symmetric(horizontal: 10),
       child: Card(
         color: Colors.transparent,
         child: ListTile(
