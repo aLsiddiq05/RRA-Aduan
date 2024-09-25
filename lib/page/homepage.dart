@@ -7,7 +7,7 @@ import 'package:rra_mobile/widget/info.dart';
 import 'package:rra_mobile/widget/profile.dart';
 import 'package:rra_mobile/widget/statusbutton.dart';
 import 'package:rra_mobile/widget/userIntro.dart';
-import 'package:rra_mobile/widget/borangMB.dart';
+// import 'package:rra_mobile/widget/borangMB.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
