@@ -21,7 +21,7 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController _passwordController = TextEditingController();
   bool _isLoading = false;
   bool _isPasswordVisible = false;
-  final storage = const FlutterSecureStorage();
+  final storage = new FlutterSecureStorage();
 
   @override
   void initState() {
@@ -58,8 +58,8 @@ class _LoginPageState extends State<LoginPage> {
       });
 
       if (result != null) {
-        final roleId  = result['roleId'];
-        if (roleId == 3) {
+        final roleId  = await storage.read(key: 'roleId');
+        if (roleId == '3') {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text('Log Masuk Berjaya')),
           );
