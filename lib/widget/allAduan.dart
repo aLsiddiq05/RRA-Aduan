@@ -5,6 +5,10 @@ import 'package:rra_mobile/services/allAduanService.dart';
 class AllAduan extends StatefulWidget {
   const AllAduan({super.key});
 
+  // final int status;
+
+  // AllAduan(this.status);
+
   @override
   State<AllAduan> createState() => _AllAduanState();
 }
@@ -33,6 +37,7 @@ class _AllAduanState extends State<AllAduan> {
 
     if (res != null) {
       print('load success');
+      // print('Status active:' + widget.status.toString());
       setState(() {
         _aduans.addAll(res.result);
         _currentPage = res.currentPage + 1;

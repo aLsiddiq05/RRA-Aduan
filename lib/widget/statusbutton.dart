@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+// import 'package:rra_mobile/widget/allAduan.dart';
 
 class ShowStatus extends StatelessWidget {
   const ShowStatus({super.key});
@@ -27,7 +28,7 @@ class ShowStatus extends StatelessWidget {
                     ],
                   ),
                   onTap: () {
-                    
+                    // AllAduan(0);
                   },
                 ),
                 ),
