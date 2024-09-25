@@ -5,7 +5,7 @@ import 'package:http/http.dart' as http;
 
 class LoginService {
   final String url = 'http://localhost:3000/auth/login';
-  final storage = new FlutterSecureStorage();
+  final storage = const FlutterSecureStorage();
 
   Future<Map<String, dynamic>?> login(String username, String password) async {
     try {

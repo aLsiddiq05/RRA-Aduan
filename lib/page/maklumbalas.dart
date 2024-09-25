@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:rra_mobile/widget/customappbar.dart';
-import 'package:rra_mobile/widget/mb_type_avatar.dart';
+// import 'package:rra_mobile/widget/mb_type_avatar.dart';
 
 class MaklumBalas extends StatefulWidget {
+  const MaklumBalas({super.key});
+
 
   @override
   State<MaklumBalas> createState() => _MaklumBalasState();
@@ -36,7 +38,7 @@ class _MaklumBalasState extends State<MaklumBalas> {
                         // height: 30,
                         width: double.infinity,
                         color: Colors.blueGrey[200],
-                        child: ListTile(
+                        child: const ListTile(
                           title: Text(
                          'Saya'
                           ),
