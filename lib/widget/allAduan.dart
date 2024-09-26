@@ -1,6 +1,9 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:rra_mobile/services/allAduanService.dart';
+import 'package:http/http.dart' as http;
 
 class AllAduan extends StatefulWidget {
   const AllAduan({super.key});
@@ -20,6 +23,24 @@ class _AllAduanState extends State<AllAduan> {
   void initState() {
     super.initState();
     _loadMyAduan();
+    _loadMyAduanStatus();
+  }
+
+  Future<void> _loadMyAduanStatus() async {
+    final token = await storage.read(key: "token");
+    final uri = Uri.parse('http://localhost:3000/api/aduan/stat');
+
+    try {
+      final res = await http.get(uri, headers: <String, String>{
+        'Authorization': 'Bearer $token',
+      });
+      if (res.statusCode == 200) {
+        print('load status success');
+        return jsonDecode(res.body);
+      }
+    } catch (e) {
+      print(e);
+    }
   }
 
   Future<void> _loadMyAduan() async {
@@ -124,7 +145,9 @@ class _AllAduanState extends State<AllAduan> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [Text("Selesai"), Text("0")],
                           ),
-                          onTap: () {resetnReload(3);},
+                          onTap: () {
+                            resetnReload(3);
+                          },
                         ),
                       ),
                     ),
