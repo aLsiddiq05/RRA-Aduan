@@ -62,7 +62,7 @@ class _MaklumBalasState extends State<MaklumBalas> {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Center(
+              const Center(
                   child: Text('--- Aduan Details ---',
                       style: TextStyle(fontWeight: FontWeight.bold))),
               const SizedBox(height: 10),
@@ -71,9 +71,9 @@ class _MaklumBalasState extends State<MaklumBalas> {
               _buildReceiptRow('Status:', 'Terima'),
               _buildReceiptRow('Created At:', createdAtFormatted),
               const Divider(),
-              Center(
+              const Center(
                   child: Text('--- Thank You ---',
-                      style: TextStyle(fontWeight: FontWeight.bold))),
+                      style: const TextStyle(fontWeight: FontWeight.bold))),
             ],
           ),
           actions: [
@@ -105,7 +105,7 @@ class _MaklumBalasState extends State<MaklumBalas> {
       children: [
         Text(
           label,
-          style: TextStyle(fontWeight: FontWeight.bold),
+          style: const TextStyle(fontWeight: FontWeight.bold),
         ),
         const SizedBox(width: 30),
         Flexible(
@@ -123,7 +123,7 @@ class _MaklumBalasState extends State<MaklumBalas> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: CustomAppBar(title: 'Maklum Balas Baharu'),
+        appBar: const CustomAppBar(title: 'Maklum Balas Baharu'),
         body: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.all(20),
