@@ -7,6 +7,7 @@ import 'package:rra_mobile/widget/customappbar.dart';
 import 'package:rra_mobile/widget/info.dart';
 import 'package:rra_mobile/widget/profile.dart';
 import 'package:rra_mobile/widget/statusbutton.dart';
+// import 'package:rra_mobile/widget/statusbutton.dart';
 import 'package:rra_mobile/widget/userIntro.dart';
 // import 'package:rra_mobile/widget/borangMB.dart';
 
@@ -42,41 +43,47 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(
-        title: "Respons Rakyat",
-        backgroundColor: const Color(0xFF0D47A1),
-        actions: [
-          IconButton(
-              onPressed: () {
-                print("Noti button");
-                Navigator.pushNamed(context, '/noti');
-              },
-              icon: const Icon(
-                Icons.notifications,
-                color: Colors.white,
-              )),
-          IconButton(
-              onPressed: () async {
-                print("logout button");
-                await storage.deleteAll();
-                Navigator.pushReplacement(context,
-                    MaterialPageRoute(builder: (context) => const LoginPage()));
-              },
-              icon: const Icon(
-                Icons.logout,
-                color: Colors.white,
-              ))
-        ],
-        content: _selectedIndex == 0
-            ? Container(
-                child: const Column(
-                  children: [
-                    UserIntro(), // user profile
-                    ShowStatus() // tukar jadi status
-                  ],
-                ),
-              )
-            : null,
-      ),
+          title: "Respons Rakyat",
+          backgroundColor: const Color(0xFF0D47A1),
+          actions: [
+            IconButton(
+                onPressed: () {
+                  print("Noti button");
+                  Navigator.pushNamed(context, '/noti');
+                },
+                icon: const Icon(
+                  Icons.notifications,
+                  color: Colors.white,
+                )),
+            IconButton(
+                onPressed: () async {
+                  print("logout button");
+                  await storage.deleteAll();
+                  Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const LoginPage()));
+                },
+                icon: const Icon(
+                  Icons.logout,
+                  color: Colors.white,
+                ))
+          ],
+          bottom: _selectedIndex == 0
+              ? PreferredSize(
+                  preferredSize: const Size.fromHeight(100.0),
+                  child: Container(child: UserIntro(), padding: EdgeInsets.only(bottom: 15),))
+              : null
+          // ? Container(
+          //     child: const Column(
+          //       children: [
+          //         UserIntro(), // user profile
+          //         // ShowStatus() // tukar jadi status
+          //       ],
+          //     ),
+          //   )
+          // : null,
+          ),
       body: SingleChildScrollView(
         child: Center(
           child: _pages.elementAt(_selectedIndex),
