@@ -77,7 +77,8 @@ class _HomePageState extends State<HomePage> {
           child: _pages.elementAt(_selectedIndex),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton: _selectedIndex == 0
+      ?FloatingActionButton(
         onPressed: () {
           Navigator.push(
             context,
@@ -87,7 +88,7 @@ class _HomePageState extends State<HomePage> {
         foregroundColor: Colors.white,
         backgroundColor: Colors.blue[500],
         child: const Icon(Icons.add),
-      ),
+      ): null,
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       bottomNavigationBar: BottomNavigationBar(
           iconSize: 35,
