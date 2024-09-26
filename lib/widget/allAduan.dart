@@ -1,9 +1,8 @@
-import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:rra_mobile/services/allAduanService.dart';
-import 'package:http/http.dart' as http;
+import 'package:rra_mobile/services/getStatusService.dart';
 
 class AllAduan extends StatefulWidget {
   const AllAduan({super.key});
@@ -16,6 +15,10 @@ class _AllAduanState extends State<AllAduan> {
   List<Aduan> _aduans = [];
   int _activeStatus = 0;
   int _currentPage = 1;
+  int terima = 0;
+  int selesai = 0;
+  int siasatan = 0;
+  int batal = 0;
   bool _isLoading = false;
   bool _hasMoreData = true;
 
@@ -23,23 +26,28 @@ class _AllAduanState extends State<AllAduan> {
   void initState() {
     super.initState();
     _loadMyAduan();
-    _loadMyAduanStatus();
+    _getAduanStatus();
   }
 
-  Future<void> _loadMyAduanStatus() async {
-    final token = await storage.read(key: "token");
-    final uri = Uri.parse('http://localhost:3000/api/aduan/stat');
+  Future<void> _getAduanStatus() async {
+    final status = await loadMyAduanStatus();
 
-    try {
-      final res = await http.get(uri, headers: <String, String>{
-        'Authorization': 'Bearer $token',
+    if (status != null)  {
+      int terima = status['terima'];
+      int siasatan = status['siasatan'];
+      int selesai = status['selesai'];
+      int batal = status['batal'];
+
+      print('Terima: $terima, Siasatan: $siasatan, Selesai: $selesai, Batal: $batal');
+
+      setState(() {
+        this.terima = terima;
+        this.siasatan = siasatan;
+        this.selesai = selesai;
+        this.batal = batal;
       });
-      if (res.statusCode == 200) {
-        print('load status success');
-        return jsonDecode(res.body);
-      }
-    } catch (e) {
-      print(e);
+    } else {
+      print('Failed load status');
     }
   }
 
@@ -91,7 +99,7 @@ class _AllAduanState extends State<AllAduan> {
           // status
           Container(
             child: Padding(
-              padding: const EdgeInsets.all(10),
+              padding:const EdgeInsets.all(10),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -103,9 +111,9 @@ class _AllAduanState extends State<AllAduan> {
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: GestureDetector(
-                          child: const Column(
+                          child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
-                            children: [Text("Terima"), Text("0")],
+                            children: [Text("Terima"), Text(terima.toString())],
                           ),
                           onTap: () {
                             resetnReload(1);
@@ -122,9 +130,9 @@ class _AllAduanState extends State<AllAduan> {
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: GestureDetector(
-                          child: const Column(
+                          child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
-                            children: [Text("Siasatan"), Text("0")],
+                            children: [ const Text("Siasatan"), Text(siasatan.toString())],
                           ),
                           onTap: () {
                             resetnReload(2);
@@ -141,9 +149,9 @@ class _AllAduanState extends State<AllAduan> {
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: GestureDetector(
-                          child: const Column(
+                          child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
-                            children: [Text("Selesai"), Text("0")],
+                            children: [ const Text("Selesai"), Text(selesai.toString())],
                           ),
                           onTap: () {
                             resetnReload(3);
@@ -160,9 +168,9 @@ class _AllAduanState extends State<AllAduan> {
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: GestureDetector(
-                          child: const Column(
+                          child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
-                            children: [Text("Batal"), Text("0")],
+                            children: [ const Text("Batal"), Text(batal.toString())],
                           ),
                           onTap: () => resetnReload(4),
                         ),

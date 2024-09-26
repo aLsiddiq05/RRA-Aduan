@@ -68,7 +68,7 @@ class _HomePageState extends State<HomePage> {
           ],
           bottom: _selectedIndex == 0
               ? PreferredSize(
-                  preferredSize: const Size.fromHeight(100.0),
+                  preferredSize: const Size.fromHeight(90.0),
                   child: Container(child: UserIntro(), padding: EdgeInsets.only(bottom: 15),))
               : null
           ),
