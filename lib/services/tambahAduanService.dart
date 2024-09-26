@@ -3,7 +3,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 
 class TambahAduanService {
-  final storage = FlutterSecureStorage();
+  final storage = const FlutterSecureStorage();
 
   Future<Map<String, dynamic>?> submitAduan(String title, String content) async {
     try {

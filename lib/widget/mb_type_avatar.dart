@@ -6,11 +6,10 @@ class CustomMBAvatar extends StatelessWidget {
   final Color textColor;
 
   const CustomMBAvatar(
-      {Key? key,
+      {super.key,
       required this.initial,
       required this.backgroundColor,
-      required this.textColor})
-      : super(key: key);
+      required this.textColor});
 
   @override
   Widget build(BuildContext context) {
