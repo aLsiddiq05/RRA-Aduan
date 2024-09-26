@@ -6,10 +6,7 @@ import 'package:rra_mobile/widget/allAduan.dart';
 import 'package:rra_mobile/widget/customappbar.dart';
 import 'package:rra_mobile/widget/info.dart';
 import 'package:rra_mobile/widget/profile.dart';
-import 'package:rra_mobile/widget/statusbutton.dart';
-// import 'package:rra_mobile/widget/statusbutton.dart';
 import 'package:rra_mobile/widget/userIntro.dart';
-// import 'package:rra_mobile/widget/borangMB.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -74,15 +71,6 @@ class _HomePageState extends State<HomePage> {
                   preferredSize: const Size.fromHeight(100.0),
                   child: Container(child: UserIntro(), padding: EdgeInsets.only(bottom: 15),))
               : null
-          // ? Container(
-          //     child: const Column(
-          //       children: [
-          //         UserIntro(), // user profile
-          //         // ShowStatus() // tukar jadi status
-          //       ],
-          //     ),
-          //   )
-          // : null,
           ),
       body: SingleChildScrollView(
         child: Center(
