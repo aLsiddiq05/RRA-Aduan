@@ -37,6 +37,9 @@ class _AllAduanState extends State<AllAduan> {
       setState(() {
         _aduans.addAll(res.result);
         _currentPage = res.currentPage + 1;
+        if (res.result.isEmpty) {
+          _hasMoreData = false;
+        }
       });
     } else {
       print('Failed to load aduan');
@@ -46,6 +49,16 @@ class _AllAduanState extends State<AllAduan> {
     }
     setState(() {
       _isLoading = false;
+    });
+  }
+
+  void resetnReload(int status) {
+    setState(() {
+      _activeStatus = status;
+      _currentPage = 1;
+      _hasMoreData = true;
+      _aduans.clear();
+      _loadMyAduan();
     });
   }
 
@@ -74,11 +87,7 @@ class _AllAduanState extends State<AllAduan> {
                             children: [Text("Terima"), Text("0")],
                           ),
                           onTap: () {
-                            setState(() {
-                              _activeStatus = 1;
-                              // _aduans.clear();
-                              _loadMyAduan();
-                            });
+                            resetnReload(1);
                           },
                         ),
                       ),
@@ -96,7 +105,9 @@ class _AllAduanState extends State<AllAduan> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [Text("Siasatan"), Text("0")],
                           ),
-                          onTap: () {},
+                          onTap: () {
+                            resetnReload(2);
+                          },
                         ),
                       ),
                     ),
@@ -113,7 +124,7 @@ class _AllAduanState extends State<AllAduan> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [Text("Selesai"), Text("0")],
                           ),
-                          onTap: () {},
+                          onTap: () {resetnReload(3);},
                         ),
                       ),
                     ),
@@ -130,7 +141,7 @@ class _AllAduanState extends State<AllAduan> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [Text("Batal"), Text("0")],
                           ),
-                          onTap: () {},
+                          onTap: () => resetnReload(4),
                         ),
                       ),
                     ),
