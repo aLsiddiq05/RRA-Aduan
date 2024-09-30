@@ -47,8 +47,7 @@ class _UserIntroState extends State<UserIntro> {
                 style: TextStyle(color: Colors.white, fontSize: 15),
               ),
               Text(
-                userName ??
-                    "Loading...", 
+                userName ?? "Loading...",
                 style: TextStyle(
                   color: Colors.amberAccent[200],
                   fontFamily: 'Roboto',

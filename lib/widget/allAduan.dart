@@ -1,8 +1,8 @@
-
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:rra_mobile/services/allAduanService.dart';
 import 'package:rra_mobile/services/getStatusService.dart';
+import 'package:rra_mobile/widget/aduanDetailReceipt.dart';
 
 class AllAduan extends StatefulWidget {
   const AllAduan({super.key});
@@ -32,13 +32,14 @@ class _AllAduanState extends State<AllAduan> {
   Future<void> _getAduanStatus() async {
     final status = await loadMyAduanStatus();
 
-    if (status != null)  {
+    if (status != null) {
       int terima = status['terima'];
       int siasatan = status['siasatan'];
       int selesai = status['selesai'];
       int batal = status['batal'];
 
-      print('Terima: $terima, Siasatan: $siasatan, Selesai: $selesai, Batal: $batal');
+      print(
+          'Terima: $terima, Siasatan: $siasatan, Selesai: $selesai, Batal: $batal');
 
       setState(() {
         this.terima = terima;
@@ -99,7 +100,7 @@ class _AllAduanState extends State<AllAduan> {
           // status
           Container(
             child: Padding(
-              padding:const EdgeInsets.all(10),
+              padding: const EdgeInsets.all(10),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -132,7 +133,10 @@ class _AllAduanState extends State<AllAduan> {
                         child: GestureDetector(
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
-                            children: [ const Text("Siasatan"), Text(siasatan.toString())],
+                            children: [
+                              const Text("Siasatan"),
+                              Text(siasatan.toString())
+                            ],
                           ),
                           onTap: () {
                             resetnReload(2);
@@ -151,7 +155,10 @@ class _AllAduanState extends State<AllAduan> {
                         child: GestureDetector(
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
-                            children: [ const Text("Selesai"), Text(selesai.toString())],
+                            children: [
+                              const Text("Selesai"),
+                              Text(selesai.toString())
+                            ],
                           ),
                           onTap: () {
                             resetnReload(3);
@@ -170,7 +177,10 @@ class _AllAduanState extends State<AllAduan> {
                         child: GestureDetector(
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
-                            children: [ const Text("Batal"), Text(batal.toString())],
+                            children: [
+                              const Text("Batal"),
+                              Text(batal.toString())
+                            ],
                           ),
                           onTap: () => resetnReload(4),
                         ),
@@ -192,50 +202,62 @@ class _AllAduanState extends State<AllAduan> {
             child: Column(
               children: <Widget>[
                 SizedBox(
-                  height: 400,
-                  child: _aduans.isEmpty && !_isLoading
-                      ? Center(child: Text('No Aduan Available.'))
-                      : ListView.builder(
-                          itemCount: _aduans.length,
-                          itemBuilder: (context, index) {
-                            final aduan = _aduans[index];
-                            Color cardColor;
-                            switch (aduan.status) {
-                              case 1:
-                                cardColor = Colors.grey;
-                                break;
-                              case 2:
-                                cardColor = Colors.blueAccent;
-                                break;
-                              case 3:
-                                cardColor = Colors.greenAccent;
-                                break;
-                              case 4:
-                                cardColor = Colors.redAccent;
-                                break;
-                              default:
-                                cardColor = Colors.white;
-                            }
-                            return Card(
-                              color: cardColor,
-                              child: ListTile(
-                                  title: Text(aduan.title),
-                                  subtitle: Text(aduan.content),
-                                  trailing: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text(DateFormat('dd/MM/yyyy').format(
-                                          DateTime.fromMillisecondsSinceEpoch(
-                                              aduan.createdAt * 1000))),
-                                      Text(DateFormat('hh:mm a').format(
-                                          DateTime.fromMillisecondsSinceEpoch(
-                                              aduan.createdAt * 1000))),
-                                    ],
-                                  )),
-                            );
-                          },
-                        ),
-                ),
+                    height: 400,
+                    child: _aduans.isEmpty && !_isLoading
+                        ? Center(child: Text('No Aduan Available.'))
+                        : ListView.builder(
+                            itemCount: _aduans.length,
+                            itemBuilder: (context, index) {
+                              final aduan = _aduans[index];
+                              Color cardColor;
+                              switch (aduan.status) {
+                                case 1:
+                                  cardColor = Colors.grey;
+                                  break;
+                                case 2:
+                                  cardColor = Colors.blueAccent;
+                                  break;
+                                case 3:
+                                  cardColor = Colors.greenAccent;
+                                  break;
+                                case 4:
+                                  cardColor = Colors.redAccent;
+                                  break;
+                                default:
+                                  cardColor = Colors.white;
+                              }
+                              return GestureDetector(
+                                onTap: () async {
+                                  await showDialog(
+                                    context: context,
+                                    builder: (context) {
+                                      return AduanDetailReceipt(
+                                          aduanId: aduan.id.toString());
+                                    },
+                                  );
+                                },
+                                child: Card(
+                                  color: cardColor,
+                                  child: ListTile(
+                                    title: Text(aduan.title),
+                                    subtitle: Text(aduan.content),
+                                    trailing: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Text(DateFormat('dd/MM/yyyy').format(
+                                            DateTime.fromMillisecondsSinceEpoch(
+                                                aduan.createdAt * 1000))),
+                                        Text(DateFormat('hh:mm a').format(
+                                            DateTime.fromMillisecondsSinceEpoch(
+                                                aduan.createdAt * 1000))),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              );
+                            },
+                          )),
                 if (_isLoading)
                   const Center(
                     child: CircularProgressIndicator(),
