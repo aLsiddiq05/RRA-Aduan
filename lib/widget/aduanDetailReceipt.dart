@@ -38,10 +38,9 @@ class _AduanDetailReceiptState extends State<AduanDetailReceipt> {
   }
 
   void _cancelAduan() {
-    // Call your API to cancel the aduan
     aduanDetailService.cancelAduan(widget.aduanId).then((success) {
       if (success) {
-        Navigator.of(context).pop(); // Close dialog
+        Navigator.of(context).pop(); 
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Aduan has been cancelled.')),
         );
@@ -168,8 +167,6 @@ class _AduanDetailReceiptState extends State<AduanDetailReceipt> {
                     ],
                   ),
                   SizedBox(height: 8),
-
-                  // Always display created_at field
                   Text(
                     'Created At:',
                     style: TextStyle(
@@ -193,7 +190,7 @@ class _AduanDetailReceiptState extends State<AduanDetailReceipt> {
                         child: Text('Batal Aduan'),
                         style: ElevatedButton.styleFrom(
                           foregroundColor: Colors.white,
-                          backgroundColor: Colors.redAccent, // Button color
+                          backgroundColor: Colors.redAccent, 
                         ),
                       ),
                     )
@@ -218,12 +215,10 @@ class _AduanDetailReceiptState extends State<AduanDetailReceipt> {
 
   String _formatCreatedAt(dynamic timestamp) {
     if (timestamp == null) return 'N/A';
-    // Assuming the timestamp is in seconds
     DateTime dateTime = DateTime.fromMillisecondsSinceEpoch(timestamp * 1000);
     return DateFormat.yMMMd().add_jm().format(dateTime);
   }
 
-  // Method to get background color based on the aduan status
   Color _getStatusColor(int? status) {
     switch (status) {
       case 1:
@@ -239,7 +234,6 @@ class _AduanDetailReceiptState extends State<AduanDetailReceipt> {
     }
   }
 
-  // Method to get a status label
   String _getStatusLabel(int? status) {
     switch (status) {
       case 1:
