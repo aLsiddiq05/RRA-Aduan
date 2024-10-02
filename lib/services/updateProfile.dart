@@ -7,19 +7,21 @@ class UpdateProfile {
   final String _url = 'http://localhost:3000/api/profil/update';
   final storage = const FlutterSecureStorage();
 
-  Future<Map<String, dynamic>?> updateProfileService({required String name, required String email}) async {
+  Future<Map<String, dynamic>?> updateProfileService(
+      {required String name,
+      required String email,
+      required String idno}) async {
     final token = await storage.read(key: 'token');
-    final res = await http.put(
-      Uri.parse(_url),
-      headers: <String, String>{
-        'Authorization': 'Bearer $token',
-        'Content-Type': 'application/json', // Line wajib kalo nk hantar data
-      },
-      body: jsonEncode(<String, String>{
-        'name': name,
-        'email': email,
-      })
-    );
+    final res = await http.put(Uri.parse(_url),
+        headers: <String, String>{
+          'Authorization': 'Bearer $token',
+          'Content-Type': 'application/json', // Line wajib kalo nk hantar data
+        },
+        body: jsonEncode(<String, String>{
+          'name': name,
+          'email': email,
+          'ic_no': idno,
+        }));
 
     if (res.statusCode == 200) {
       print(res.body);

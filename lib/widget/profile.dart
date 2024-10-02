@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:rra_mobile/page/homepage.dart';
 import 'package:rra_mobile/services/profilService.dart';
 import 'package:rra_mobile/services/updateProfile.dart';
 
@@ -12,6 +13,7 @@ class Profil extends StatefulWidget {
 class _ProfilState extends State<Profil> {
   final TextEditingController _name = TextEditingController();
   final TextEditingController _email = TextEditingController();
+  final TextEditingController _idNo = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   var noic = '';
   var oName = '';
@@ -33,16 +35,21 @@ class _ProfilState extends State<Profil> {
         oName = res['name'];
         oEmail = res['email'];
         noic = res['id_no'];
+
+        
+        _name.text = oName; 
+        _email.text = oEmail; 
+        _idNo.text = noic;
       });
     }
   }
 
-  Future<void> updateProfile(String nameN, String emailN) async {
+  Future<void> updateProfile(String nameN, String emailN, String idNoN) async {
     UpdateProfile pack = UpdateProfile();
 
     try {
-      var res =
-          await pack.updateProfileService(name: nameN, email: emailN);
+      var res = await pack.updateProfileService(
+          name: nameN, email: emailN, idno: idNoN);
       showSuccess();
       print('result:  $res');
     } catch (e) {
@@ -65,6 +72,12 @@ class _ProfilState extends State<Profil> {
                   onPressed: () {
                     Navigator.of(context).pop();
                     getProfile();
+                    Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const HomePage(),
+                        ),
+                        (Route<dynamic> route) => false);
                   },
                   child: const Text('OK'))
             ],
@@ -124,9 +137,6 @@ class _ProfilState extends State<Profil> {
               controller: _name,
               decoration: InputDecoration(
                   label: const Text('Nama'),
-                  hintText: oName,
-                  hintStyle: const TextStyle(
-                      fontWeight: FontWeight.bold, color: Colors.grey),
                   border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(20)),
                   floatingLabelBehavior: FloatingLabelBehavior.always),
@@ -144,15 +154,12 @@ class _ProfilState extends State<Profil> {
               controller: _email,
               decoration: InputDecoration(
                   label: const Text('Email'),
-                  hintText: oEmail,
-                  hintStyle: const TextStyle(
-                      fontWeight: FontWeight.bold, color: Colors.grey),
                   border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(20)),
                   floatingLabelBehavior: FloatingLabelBehavior.always),
               validator: (value) {
                 if (value == null || value.isEmpty) {
-                  return 'Please fill your name';
+                  return 'Please fill your email';
                 }
                 return null;
               },
@@ -161,19 +168,15 @@ class _ProfilState extends State<Profil> {
               height: 10,
             ),
             TextFormField(
-              enabled: false,
-              controller: null,
+              controller: _idNo,
               decoration: InputDecoration(
-                  label: Text('No Kad Pengenalan'),
-                  hintText: noic,
-                  hintStyle: const TextStyle(
-                      fontWeight: FontWeight.bold, color: Colors.grey),
+                  label: const Text('No Kad Pengenalan'),
                   border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(20)),
                   floatingLabelBehavior: FloatingLabelBehavior.always),
               validator: (value) {
                 if (value == null || value.isEmpty) {
-                  return 'Please fill your name';
+                  return 'Please fill your ID number';
                 }
                 return null;
               },
@@ -183,7 +186,9 @@ class _ProfilState extends State<Profil> {
             ),
             ElevatedButton(
                 onPressed: () {
-                  updateProfile(_name.text, _email.text);
+                  if (_formKey.currentState!.validate()) {
+                    updateProfile(_name.text, _email.text, _idNo.text);
+                  }
                 },
                 child: Text('Kemas Kini'))
           ],
