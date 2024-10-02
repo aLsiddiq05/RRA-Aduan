@@ -105,6 +105,15 @@ class _AllAduanState extends State<AllAduan> {
     });
   }
 
+  Future<void> _handleRefresh() async {
+    await Future.delayed(Duration(seconds: 3));
+
+    setState(() {
+      _loadMyAduan();
+      _getAduanStatus();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -269,22 +278,22 @@ class _AllAduanState extends State<AllAduan> {
                                       ],
                                     ),
                                   ),
-                                ),
-                              );
-                            },
-                          )),
-                if (_isLoading)
-                  const Center(
-                    child: CircularProgressIndicator(),
-                  ),
-                if (_hasMoreData && !_isLoading)
-                  ElevatedButton(
-                    onPressed: _loadMyAduan,
-                    child: const Text('Load More'),
-                  ),
-              ],
+                                ));
+                              },
+                            )),
+                  if (_isLoading)
+                    const Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                  if (_hasMoreData && !_isLoading)
+                    ElevatedButton(
+                      onPressed: _loadMyAduan,
+                      child: const Text('Load More'),
+                    ),
+                ],
+              ),
             ),
-          )
+          
         ],
       ),
     );

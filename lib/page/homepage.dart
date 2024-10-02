@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+// import 'package:http/http.dart';
 import 'package:rra_mobile/page/maklumbalas.dart';
+// import 'package:rra_mobile/services/allAduanService.dart';
 import 'package:rra_mobile/views/login.dart';
+import 'package:rra_mobile/widget/adminPage.dart';
 import 'package:rra_mobile/widget/allAduan.dart';
 import 'package:rra_mobile/widget/customappbar.dart';
 import 'package:rra_mobile/widget/info.dart';
@@ -18,6 +21,14 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   int _selectedIndex = 0;
   final storage = const FlutterSecureStorage();
+  var _roleId;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getRoleId();
+  }
 
   void _onItemTapped(int index) {
     setState(() {
@@ -25,11 +36,29 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
-  static const List<Widget> _pages = <Widget>[
-    AllAduan(),
+  List<Widget> _pages = <Widget>[
+    AllAduan(), //can change
     Informasi(),
     Profil(),
   ];
+
+  void getRoleId() async {
+    final roleId = await storage.read(key: 'roleId');
+    setState(() {
+      _roleId = roleId;
+      mainShow();
+    });
+  }
+
+  void mainShow() {
+    setState(() {
+      if (_roleId == '1') {
+        _pages[0] = AdminPage();
+      } else if (_roleId == '3') {
+        _pages[0] = AllAduan();
+      }
+    });
+  }
 
   @override
   void dispose() {
@@ -69,26 +98,27 @@ class _HomePageState extends State<HomePage> {
           bottom: _selectedIndex == 0
               ? PreferredSize(
                   preferredSize: const Size.fromHeight(90.0),
-                  child: Container(child: UserIntro(), padding: EdgeInsets.only(bottom: 15),))
-              : null
-          ),
-      body: SingleChildScrollView(
-        child: Center(
-          child: _pages.elementAt(_selectedIndex),
-        ),
+                  child: Container(
+                    child: UserIntro(),
+                    padding: EdgeInsets.only(bottom: 15),
+                  ))
+              : null),
+      body: Center(
+        child: _pages.elementAt(_selectedIndex),
       ),
       floatingActionButton: _selectedIndex == 0
-      ?FloatingActionButton(
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => MaklumBalas()),
-          );
-        },
-        foregroundColor: Colors.white,
-        backgroundColor: Colors.blue[500],
-        child: const Icon(Icons.add),
-      ): null,
+          ? FloatingActionButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => MaklumBalas()),
+                );
+              },
+              foregroundColor: Colors.white,
+              backgroundColor: Colors.blue[500],
+              child: const Icon(Icons.add),
+            )
+          : null,
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       bottomNavigationBar: BottomNavigationBar(
           iconSize: 35,
