@@ -86,9 +86,9 @@ class _AllAduanState extends State<AllAduan> {
 
   void _refreshAduanData() {
     setState(() {
-      _aduans.clear(); // Clear the list
-      _currentPage = 1; // Reset to the first page
-      _hasMoreData = true; // Allow further data loading
+      _aduans.clear();
+      _currentPage = 1; 
+      _hasMoreData = true;
     });
 
     _loadMyAduan();
