@@ -13,6 +13,7 @@ class UpdateProfile {
       Uri.parse(_url),
       headers: <String, String>{
         'Authorization': 'Bearer $token',
+        'Content-Type': 'application/json', // Line wajib kalo nk hantar data
       },
       body: jsonEncode(<String, String>{
         'name': name,
@@ -21,6 +22,7 @@ class UpdateProfile {
     );
 
     if (res.statusCode == 200) {
+      print(res.body);
       return jsonDecode(res.body) as Map<String, dynamic>;
     } else {
       throw Exception('Failed to update profile: ${res.statusCode}');

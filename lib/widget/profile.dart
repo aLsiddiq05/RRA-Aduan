@@ -37,18 +37,17 @@ class _ProfilState extends State<Profil> {
     }
   }
 
-  Future<void> updateProfile() async {
+  Future<void> updateProfile(String nameN, String emailN) async {
     UpdateProfile pack = UpdateProfile();
 
     try {
       var res =
-          await pack.updateProfileService(name: _name.text, email: _email.text);
+          await pack.updateProfileService(name: nameN, email: emailN);
       showSuccess();
-      print('result');
-      print(res);
+      print('result:  $res');
     } catch (e) {
       showFail();
-      print(e);
+      print('Error: $e');
     }
   }
 
@@ -184,7 +183,7 @@ class _ProfilState extends State<Profil> {
             ),
             ElevatedButton(
                 onPressed: () {
-                  updateProfile();
+                  updateProfile(_name.text, _email.text);
                 },
                 child: Text('Kemas Kini'))
           ],
