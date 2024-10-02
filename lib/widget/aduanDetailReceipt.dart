@@ -4,8 +4,13 @@ import 'package:rra_mobile/services/aduanDetailService.dart';
 
 class AduanDetailReceipt extends StatefulWidget {
   final String aduanId;
+  final VoidCallback onAduanCanceled;
 
-  const AduanDetailReceipt({Key? key, required this.aduanId}) : super(key: key);
+  const AduanDetailReceipt({
+    Key? key,
+    required this.aduanId,
+    required this.onAduanCanceled,
+  }) : super(key: key);
 
   @override
   _AduanDetailReceiptState createState() => _AduanDetailReceiptState();
@@ -40,7 +45,8 @@ class _AduanDetailReceiptState extends State<AduanDetailReceipt> {
   void _cancelAduan() {
     aduanDetailService.cancelAduan(widget.aduanId).then((success) {
       if (success) {
-        Navigator.of(context).pop(); 
+        widget.onAduanCanceled();
+        Navigator.of(context).pop();
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Aduan has been cancelled.')),
         );
@@ -190,7 +196,7 @@ class _AduanDetailReceiptState extends State<AduanDetailReceipt> {
                         child: Text('Batal Aduan'),
                         style: ElevatedButton.styleFrom(
                           foregroundColor: Colors.white,
-                          backgroundColor: Colors.redAccent, 
+                          backgroundColor: Colors.redAccent,
                         ),
                       ),
                     )

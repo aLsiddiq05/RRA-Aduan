@@ -4,7 +4,7 @@ import 'package:http/http.dart' as http;
 
 class AduanDetailService {
   final String baseUrl = 'http://localhost:3000/api/aduan';
-  final storage = FlutterSecureStorage();
+  final storage = const FlutterSecureStorage();
 
   Future<Map<String, dynamic>?> fetchAduanDetail(String aduanId) async {
     String? token = await storage.read(key: 'token');

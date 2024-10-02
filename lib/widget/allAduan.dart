@@ -63,6 +63,8 @@ class _AllAduanState extends State<AllAduan> {
 
     if (res != null) {
       print('load success');
+      print('Current Page: $_currentPage');
+      print('Fetched ${res.result.length} aduans');
       // print('Status active:' + widget.status.toString());
       setState(() {
         _aduans.addAll(res.result);
@@ -80,6 +82,17 @@ class _AllAduanState extends State<AllAduan> {
     setState(() {
       _isLoading = false;
     });
+  }
+
+  void _refreshAduanData() {
+    setState(() {
+      _aduans.clear(); // Clear the list
+      _currentPage = 1; // Reset to the first page
+      _hasMoreData = true; // Allow further data loading
+    });
+
+    _loadMyAduan();
+    _getAduanStatus();
   }
 
   void resetnReload(int status) {
@@ -232,7 +245,9 @@ class _AllAduanState extends State<AllAduan> {
                                     context: context,
                                     builder: (context) {
                                       return AduanDetailReceipt(
-                                          aduanId: aduan.id.toString());
+                                        aduanId: aduan.id.toString(),
+                                        onAduanCanceled: _refreshAduanData,
+                                      );
                                     },
                                   );
                                 },
