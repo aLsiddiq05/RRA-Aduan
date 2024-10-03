@@ -4,12 +4,13 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:rra_mobile/page/maklumbalas.dart';
 // import 'package:rra_mobile/services/allAduanService.dart';
 import 'package:rra_mobile/views/login.dart';
-import 'package:rra_mobile/widget/adminPage.dart';
+
 import 'package:rra_mobile/widget/allAduan.dart';
 import 'package:rra_mobile/widget/customappbar.dart';
 import 'package:rra_mobile/widget/info.dart';
 import 'package:rra_mobile/widget/profile.dart';
 import 'package:rra_mobile/widget/userIntro.dart';
+import 'package:rra_mobile/widget/userPage.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -52,8 +53,8 @@ class _HomePageState extends State<HomePage> {
 
   void mainShow() {
     setState(() {
-      if (_roleId == '1') {
-        _pages[0] = AdminPage();
+      if (_roleId == '2') {
+        _pages[0] = UserPage();
       } else if (_roleId == '3') {
         _pages[0] = AllAduan();
       }
@@ -106,7 +107,8 @@ class _HomePageState extends State<HomePage> {
       body: Center(
         child: _pages.elementAt(_selectedIndex),
       ),
-      floatingActionButton: _selectedIndex == 0
+      floatingActionButton: 
+      _selectedIndex == 0 && _roleId == '3'
           ? FloatingActionButton(
               onPressed: () {
                 Navigator.push(

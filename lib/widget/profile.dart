@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:rra_mobile/page/homepage.dart';
 import 'package:rra_mobile/services/profilService.dart';
 import 'package:rra_mobile/services/updateProfile.dart';
@@ -18,11 +19,14 @@ class _ProfilState extends State<Profil> {
   var noic = '';
   var oName = '';
   var oEmail = '';
+  var _roleId;
+  final storage = FlutterSecureStorage();
 
   @override
   void initState() {
     super.initState();
     getProfile();
+    getRoleId();
   }
 
   Future<void> getProfile() async {
@@ -56,6 +60,14 @@ class _ProfilState extends State<Profil> {
       showFail();
       print('Error: $e');
     }
+  }
+
+  void getRoleId() async {
+    final roleId = await storage.read(key: "roleId");
+    setState(() {
+      _roleId = roleId;
+    });
+    print('roleId: $roleId');
   }
 
   void showSuccess() {
@@ -166,7 +178,8 @@ class _ProfilState extends State<Profil> {
             ),
             const SizedBox(
               height: 10,
-            ),
+            ), 
+            _roleId == '3' ?
             TextFormField(
               controller: _idNo,
               decoration: InputDecoration(
@@ -174,16 +187,17 @@ class _ProfilState extends State<Profil> {
                   border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(20)),
                   floatingLabelBehavior: FloatingLabelBehavior.always),
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Please fill your ID number';
-                }
-                return null;
-              },
-            ),
+              // validator: (value) {
+              //   if (value == null || value.isEmpty) {
+              //     return 'Please fill your ID number';
+              //   }
+              //   return null;
+              // },
+            ): const SizedBox.shrink(),
             const SizedBox(
               height: 10,
             ),
+
             ElevatedButton(
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {

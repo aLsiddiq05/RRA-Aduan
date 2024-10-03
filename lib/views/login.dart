@@ -59,7 +59,7 @@ class _LoginPageState extends State<LoginPage> {
 
       if (result != null) {
         final roleId  = await storage.read(key: 'roleId');
-        if (roleId == '3' || roleId == '1') {
+        if (roleId == '3' || roleId == '2') {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text('Log Masuk Berjaya')),
           );

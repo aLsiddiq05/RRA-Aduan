@@ -10,18 +10,23 @@ class UpdateProfile {
   Future<Map<String, dynamic>?> updateProfileService(
       {required String name,
       required String email,
-      required String idno}) async {
+      String? idno}) async {
     final token = await storage.read(key: 'token');
+    Map<String, String> body = {
+      'name': name,
+      'email': email,
+    };
+
+    if (idno != null && idno.isNotEmpty) {
+      body['ic_no'] = idno;
+    }
+
     final res = await http.put(Uri.parse(_url),
         headers: <String, String>{
           'Authorization': 'Bearer $token',
           'Content-Type': 'application/json', // Line wajib kalo nk hantar data
         },
-        body: jsonEncode(<String, String>{
-          'name': name,
-          'email': email,
-          'ic_no': idno,
-        }));
+        body: jsonEncode(body));
 
     if (res.statusCode == 200) {
       print(res.body);
