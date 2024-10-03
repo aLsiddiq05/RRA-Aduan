@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:rra_mobile/page/penggunaList.dart';
 
 class UserPage extends StatelessWidget {
   UserPage({super.key});
@@ -32,7 +33,8 @@ class UserPage extends StatelessWidget {
                     ],
                   ),
                   onTap: () {
-                    print('Button Pegawai');
+                    print('Button Pengguna');
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => PenggunaList(),));
                   },
                 ),
               ),
@@ -53,7 +55,7 @@ class UserPage extends StatelessWidget {
                     ],
                   ),
                   onTap: () {
-                    print('Button Penggunan');
+                    print('Button Aduan');
                   },
                 ),
               ),
