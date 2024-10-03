@@ -2,6 +2,7 @@ import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:rra_mobile/services/detailPenggunaService.dart';
+import 'package:rra_mobile/widget/aduanDetailReceipt.dart';
 import 'package:rra_mobile/widget/customappbar.dart';
 
 class DetailPengguna extends StatefulWidget {
@@ -16,19 +17,19 @@ class DetailPengguna extends StatefulWidget {
 
 class _DetailPenggunaState extends State<DetailPengguna> {
   late double mWidth;
-  String? name;
-  String? ic;
-  String? email;
+  String name = '';
+  String ic = '';
+  String email ='';
   List<Aduan> _aduan = [];
   int? totalAduan;
  
   @override
   void initState() {
     super.initState();
-    getProfile();
+    getProfileAduan();
   }
 
-  Future<void> getProfile() async {
+  Future<void> getProfileAduan() async {
     final res = await fetchProfile(widget.id);
 
     print('test res: $res');
@@ -48,6 +49,10 @@ class _DetailPenggunaState extends State<DetailPengguna> {
     }
   }
 
+  void _refreshAduanData() {
+    getProfileAduan(); // Refresh the aduan list
+  }
+
   @override
   Widget build(BuildContext context) {
     mWidth = MediaQuery.of(context).size.width;
@@ -55,20 +60,21 @@ class _DetailPenggunaState extends State<DetailPengguna> {
       appBar: const CustomAppBar(title: 'Detail Pengguna',backgroundColor: Colors.teal,),
       body: Container(
         margin: EdgeInsets.all(mWidth * 0.03),
-        color: Colors.teal,
+        // color: Colors.teal,
         child: Center(
           child: Column(
             children: [
               //detail pengguna
               Card(
+                color: Colors.teal[200],
                 child: ListTile(
                   leading: Icon(Icons.person),
                   title:Text('Profil'),
                   subtitle: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [Text(name!, style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),),
-                      Text(ic!, style: TextStyle(fontSize: 15),),
-                      Text(email!, style: TextStyle(fontSize: 15),)
+                    children: [Text(name, style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),),
+                      Text(ic, style: TextStyle(fontSize: 15),),
+                      Text(email, style: TextStyle(fontSize: 15),)
                     ],
                   ),
                 ),
@@ -89,9 +95,13 @@ class _DetailPenggunaState extends State<DetailPengguna> {
                   itemBuilder: (context, index) {
                     final aduan = _aduan[index];
                     return Card(
+                      elevation: 10,
                     child: GestureDetector(
                       onTap: () {
-                        // Navigator.push(context, MaterialPageRoute(builder:(context) => null,));
+                        showDialog(context: context, builder:(context) {
+                          return AduanDetailReceipt(aduanId: aduan.id.toString(), onAduanCanceled: _refreshAduanData);
+                        },);
+                        
                       },
                       child: ListTile(
                         title: Text(aduan.title),

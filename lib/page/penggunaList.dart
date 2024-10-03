@@ -62,12 +62,13 @@ class _PenggunaListState extends State<PenggunaList> {
     return Scaffold(
       appBar: CustomAppBar(
         title: 'Senarai Pengguna',
+        backgroundColor: Colors.teal,
       ),
       
       body: Container(
         width: mWidth,
         margin: EdgeInsets.all(mWidth * 0.04),
-        color: Colors.greenAccent,
+        // color: Colors.greenAccent,
         child: Column(
           children: <Widget>[
             Expanded(
@@ -80,6 +81,7 @@ class _PenggunaListState extends State<PenggunaList> {
                           itemBuilder: (context, index) {
                             final pengguna = _penggunas[index];
                             return Card(
+                              elevation: 10,
                               child: GestureDetector(
                                 onTap: () {
                                   print('Profile ID: ${pengguna.id}');
