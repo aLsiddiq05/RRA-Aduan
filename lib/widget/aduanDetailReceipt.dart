@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:rra_mobile/services/aduanDetailService.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart'; // Import for FlutterSecureStorage
 
 class AduanDetailReceipt extends StatefulWidget {
   final String aduanId;
@@ -20,11 +21,19 @@ class _AduanDetailReceiptState extends State<AduanDetailReceipt> {
   Map<String, dynamic>? aduan;
   bool isLoading = true;
   late AduanDetailService aduanDetailService;
+  String? roleId; // Role ID to control button display logic
+  final storage = const FlutterSecureStorage(); // Secure storage instance
 
   @override
   void initState() {
     super.initState();
     aduanDetailService = AduanDetailService();
+    _fetchRoleAndAduanDetails();
+  }
+
+  Future<void> _fetchRoleAndAduanDetails() async {
+    // Fetch the roleId from storage and then the aduan details
+    roleId = await storage.read(key: 'roleId');
     _fetchAduanDetail();
   }
 
@@ -48,11 +57,11 @@ class _AduanDetailReceiptState extends State<AduanDetailReceipt> {
         widget.onAduanCanceled();
         Navigator.of(context).pop();
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Aduan has been cancelled.')),
+          const SnackBar(content: Text('Aduan has been cancelled.')),
         );
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Failed to cancel Aduan.')),
+          const SnackBar(content: Text('Failed to cancel Aduan.')),
         );
       }
     });
@@ -66,14 +75,14 @@ class _AduanDetailReceiptState extends State<AduanDetailReceipt> {
       ),
       backgroundColor: _getStatusColor(aduan?['status']),
       child: isLoading
-          ? Center(child: CircularProgressIndicator())
+          ? const Center(child: CircularProgressIndicator())
           : Padding(
               padding: const EdgeInsets.all(16.0),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Center(
+                  const Center(
                     child: Text(
                       'Aduan Details',
                       style: TextStyle(
@@ -83,9 +92,9 @@ class _AduanDetailReceiptState extends State<AduanDetailReceipt> {
                       ),
                     ),
                   ),
-                  Divider(thickness: 2, color: Colors.black),
-                  SizedBox(height: 8),
-                  Text(
+                  const Divider(thickness: 2, color: Colors.black),
+                  const SizedBox(height: 8),
+                  const Text(
                     'Aduan Title:',
                     style: TextStyle(
                       fontFamily: 'Courier',
@@ -95,12 +104,12 @@ class _AduanDetailReceiptState extends State<AduanDetailReceipt> {
                   ),
                   Text(
                     aduan?['title'] ?? 'N/A',
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 16,
                     ),
                   ),
-                  SizedBox(height: 8),
-                  Text(
+                  const SizedBox(height: 8),
+                  const Text(
                     'Aduan Content:',
                     style: TextStyle(
                       fontFamily: 'Courier',
@@ -110,14 +119,13 @@ class _AduanDetailReceiptState extends State<AduanDetailReceipt> {
                   ),
                   Text(
                     aduan?['content'] ?? 'N/A',
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 16,
                     ),
                   ),
-                  SizedBox(height: 8),
-                  // Conditional display for Pegawai Name and Hasil
+                  const SizedBox(height: 8),
                   if (aduan?['status'] == 3) ...[
-                    Text(
+                    const Text(
                       'Pegawai Name:',
                       style: TextStyle(
                         fontFamily: 'Courier',
@@ -127,12 +135,12 @@ class _AduanDetailReceiptState extends State<AduanDetailReceipt> {
                     ),
                     Text(
                       aduan?['pegawaiName'] ?? 'N/A',
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 16,
                       ),
                     ),
-                    SizedBox(height: 8),
-                    Text(
+                    const SizedBox(height: 8),
+                    const Text(
                       'Hasil:',
                       style: TextStyle(
                         fontFamily: 'Courier',
@@ -142,19 +150,19 @@ class _AduanDetailReceiptState extends State<AduanDetailReceipt> {
                     ),
                     Text(
                       aduan?['hasil'] ?? 'N/A',
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 16,
                       ),
                     ),
-                    SizedBox(height: 8),
+                    const SizedBox(height: 8),
                   ],
-                  SizedBox(height: 8),
-                  Divider(thickness: 2, color: Colors.black),
-                  SizedBox(height: 8),
+                  const SizedBox(height: 8),
+                  const Divider(thickness: 2, color: Colors.black),
+                  const SizedBox(height: 8),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
+                      const Text(
                         'Status:',
                         style: TextStyle(
                           fontFamily: 'Courier',
@@ -164,7 +172,7 @@ class _AduanDetailReceiptState extends State<AduanDetailReceipt> {
                       ),
                       Text(
                         _getStatusLabel(aduan?['status']),
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontFamily: 'Courier',
                           fontWeight: FontWeight.bold,
                           fontSize: 18,
@@ -172,8 +180,8 @@ class _AduanDetailReceiptState extends State<AduanDetailReceipt> {
                       ),
                     ],
                   ),
-                  SizedBox(height: 8),
-                  Text(
+                  const SizedBox(height: 8),
+                  const Text(
                     'Created At:',
                     style: TextStyle(
                       fontFamily: 'Courier',
@@ -183,17 +191,16 @@ class _AduanDetailReceiptState extends State<AduanDetailReceipt> {
                   ),
                   Text(
                     _formatCreatedAt(aduan?['created_at']),
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 16,
                     ),
                   ),
-                  SizedBox(height: 16),
-                  // Show Batal Aduan button if status is Terima (1) or Dalam Siasatan (2)
+                  const SizedBox(height: 16),
                   if (_shouldShowBatalAduanButton(aduan?['status']))
                     Center(
                       child: ElevatedButton(
                         onPressed: _cancelAduan,
-                        child: Text('Batal Aduan'),
+                        child: const Text('Batal Aduan'),
                         style: ElevatedButton.styleFrom(
                           foregroundColor: Colors.white,
                           backgroundColor: Colors.redAccent,
@@ -201,7 +208,7 @@ class _AduanDetailReceiptState extends State<AduanDetailReceipt> {
                       ),
                     )
                   else
-                    Center(
+                    const Center(
                       child: Text(
                         'Thank You!',
                         style: TextStyle(
@@ -211,8 +218,8 @@ class _AduanDetailReceiptState extends State<AduanDetailReceipt> {
                         ),
                       ),
                     ),
-                  SizedBox(height: 8),
-                  Divider(thickness: 2, color: Colors.black),
+                  const SizedBox(height: 8),
+                  const Divider(thickness: 2, color: Colors.black),
                 ],
               ),
             ),
@@ -255,8 +262,15 @@ class _AduanDetailReceiptState extends State<AduanDetailReceipt> {
     }
   }
 
-  // Condition to show the Batal Aduan button
   bool _shouldShowBatalAduanButton(int? status) {
-    return status == 1 || status == 2;
+    // Show button for Pengadu (roleId = 3) when status is 1 or 2
+    if (roleId == '3' && (status == 1 || status == 2)) {
+      return true;
+    }
+    // Show button for Pegawai (roleId = 2) only when status is 1
+    if (roleId == '2' && status == 1) {
+      return true;
+    }
+    return false;
   }
 }
