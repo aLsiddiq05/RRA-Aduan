@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:rra_mobile/views/AduanList.dart';
 
 class UserPage extends StatelessWidget {
   UserPage({super.key});
@@ -21,14 +22,20 @@ class UserPage extends StatelessWidget {
           Expanded(
             child: SizedBox(
               width: double.infinity,
-              child: Card( 
+              child: Card(
                 color: Colors.grey[400],
                 child: GestureDetector(
                   child: const Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text('Pengguna', style: TextStyle(fontSize: 25),),
-                      Icon(Icons.people, size: 60,),
+                      Text(
+                        'Pengguna',
+                        style: TextStyle(fontSize: 25),
+                      ),
+                      Icon(
+                        Icons.people,
+                        size: 60,
+                      ),
                     ],
                   ),
                   onTap: () {
@@ -38,7 +45,9 @@ class UserPage extends StatelessWidget {
               ),
             ),
           ),
-          const SizedBox(height: 10,),
+          const SizedBox(
+            height: 10,
+          ),
           Expanded(
             child: SizedBox(
               width: double.infinity,
@@ -48,12 +57,22 @@ class UserPage extends StatelessWidget {
                   child: const Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text('Aduan', style: TextStyle(fontSize: 25),),
-                      Icon(Icons.message_outlined, size: 60,)
+                      Text(
+                        'Aduan',
+                        style: TextStyle(fontSize: 25),
+                      ),
+                      Icon(
+                        Icons.message_outlined,
+                        size: 60,
+                      )
                     ],
                   ),
                   onTap: () {
-                    print('Button Penggunan');
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const AduanListPage()),
+                    );
                   },
                 ),
               ),

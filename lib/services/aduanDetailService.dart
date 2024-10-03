@@ -8,13 +8,17 @@ class AduanDetailService {
 
   Future<Map<String, dynamic>?> fetchAduanDetail(String aduanId) async {
     String? token = await storage.read(key: 'token');
+    String? roleId = await storage.read(key: 'roleId'); // Retrieve the role
 
-    if (token == null) {
+    if (token == null || roleId == null) {
       throw Exception('User is not authenticated');
     }
 
     try {
-      String url = '$baseUrl/my/$aduanId';
+      // Determine the API endpoint based on the user's role
+      String url = (roleId == '2')
+          ? '$baseUrl/aduanDetail-Pegawai/$aduanId'
+          : '$baseUrl/my/$aduanId';
 
       final response = await http.get(
         Uri.parse(url),
@@ -26,6 +30,7 @@ class AduanDetailService {
       if (response.statusCode == 200) {
         return json.decode(response.body);
       } else {
+        // Handle all error cases in a generic way
         throw Exception(
             'Failed to fetch aduan details: ${response.reasonPhrase}');
       }
@@ -37,13 +42,24 @@ class AduanDetailService {
 
   Future<bool> cancelAduan(String aduanId) async {
     String? token = await storage.read(key: 'token');
+    String? roleId = await storage.read(key: 'roleId'); // Retrieve the roleId
 
-    if (token == null) {
+    if (token == null || roleId == null) {
       throw Exception('User is not authenticated');
     }
 
     try {
-      String url = '$baseUrl/cancel/$aduanId';
+      String url;
+
+      if (roleId == '3') {
+        // For Pengadu (roleId = 3), use the cancel endpoint
+        url = '$baseUrl/cancel/$aduanId';
+      } else if (roleId == '2') {
+        // For Pegawai (roleId = 2), use the tolak endpoint
+        url = '$baseUrl/pegawai/tolak/$aduanId';
+      } else {
+        throw Exception('Unauthorized role');
+      }
 
       final response = await http.put(
         Uri.parse(url),
@@ -56,12 +72,12 @@ class AduanDetailService {
       if (response.statusCode == 200) {
         return true;
       } else {
-        print('Failed to cancel aduan: ${response.reasonPhrase}');
-        return false; 
+        print('Failed to process aduan: ${response.reasonPhrase}');
+        return false;
       }
     } catch (e) {
-      print('Error cancelling aduan: $e');
-      return false; 
+      print('Error processing aduan: $e');
+      return false;
     }
   }
 }
