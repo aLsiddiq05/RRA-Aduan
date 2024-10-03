@@ -99,7 +99,7 @@ class _DetailPenggunaState extends State<DetailPengguna> {
                     child: GestureDetector(
                       onTap: () {
                         showDialog(context: context, builder:(context) {
-                          return AduanDetailReceipt(aduanId: aduan.id.toString(), onAduanCanceled: _refreshAduanData);
+                          return AduanDetailReceipt(aduanId: aduan.id.toString(), onAduanCanceled: getProfileAduan);
                         },);
                         
                       },
