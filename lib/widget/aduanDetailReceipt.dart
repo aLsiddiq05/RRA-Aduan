@@ -236,7 +236,7 @@ class _AduanDetailReceiptState extends State<AduanDetailReceipt> {
                     ),
                   ),
                   const SizedBox(height: 16),
-                  if (_shouldShowCancelButton(aduan?['status']) ||
+                  if (_shouldShowCancelButton(aduan?['status']) &&
                       _shouldShowTerimaButton(aduan?['status']))
                     Center(
                       child: Row(
