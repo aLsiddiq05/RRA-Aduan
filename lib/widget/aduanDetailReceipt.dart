@@ -116,57 +116,27 @@ class _AduanDetailReceiptState extends State<AduanDetailReceipt> {
       backgroundColor: _getStatusColor(aduan?['status']),
       child: isLoading
           ? const Center(child: CircularProgressIndicator())
-          : Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Center(
-                    child: Text(
-                      'Aduan Details',
-                      style: TextStyle(
-                        fontFamily: 'Courier',
-                        fontWeight: FontWeight.bold,
-                        fontSize: 28,
+          : SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Center(
+                      child: Text(
+                        'Aduan Details',
+                        style: TextStyle(
+                          fontFamily: 'Courier',
+                          fontWeight: FontWeight.bold,
+                          fontSize: 28,
+                        ),
                       ),
                     ),
-                  ),
-                  const Divider(thickness: 2, color: Colors.black),
-                  const SizedBox(height: 8),
-                  const Text(
-                    'Aduan Title:',
-                    style: TextStyle(
-                      fontFamily: 'Courier',
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18,
-                    ),
-                  ),
-                  Text(
-                    aduan?['title'] ?? 'N/A',
-                    style: const TextStyle(
-                      fontSize: 16,
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  const Text(
-                    'Aduan Content:',
-                    style: TextStyle(
-                      fontFamily: 'Courier',
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18,
-                    ),
-                  ),
-                  Text(
-                    aduan?['content'] ?? 'N/A',
-                    style: const TextStyle(
-                      fontSize: 16,
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  if (aduan?['status'] == 3) ...[
+                    const Divider(thickness: 2, color: Colors.black),
+                    const SizedBox(height: 8),
                     const Text(
-                      'Pegawai Name:',
+                      'Aduan Title:',
                       style: TextStyle(
                         fontFamily: 'Courier',
                         fontWeight: FontWeight.bold,
@@ -174,14 +144,14 @@ class _AduanDetailReceiptState extends State<AduanDetailReceipt> {
                       ),
                     ),
                     Text(
-                      aduan?['pegawaiName'] ?? 'N/A',
+                      aduan?['title'] ?? 'N/A',
                       style: const TextStyle(
                         fontSize: 16,
                       ),
                     ),
                     const SizedBox(height: 8),
                     const Text(
-                      'Hasil:',
+                      'Aduan Content:',
                       style: TextStyle(
                         fontFamily: 'Courier',
                         fontWeight: FontWeight.bold,
@@ -189,21 +159,15 @@ class _AduanDetailReceiptState extends State<AduanDetailReceipt> {
                       ),
                     ),
                     Text(
-                      aduan?['hasil'] ?? 'N/A',
+                      aduan?['content'] ?? 'N/A',
                       style: const TextStyle(
                         fontSize: 16,
                       ),
                     ),
                     const SizedBox(height: 8),
-                  ],
-                  const SizedBox(height: 8),
-                  const Divider(thickness: 2, color: Colors.black),
-                  const SizedBox(height: 8),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
+                    if (aduan?['status'] == 3) ...[
                       const Text(
-                        'Status:',
+                        'Pegawai Name:',
                         style: TextStyle(
                           fontFamily: 'Courier',
                           fontWeight: FontWeight.bold,
@@ -211,109 +175,151 @@ class _AduanDetailReceiptState extends State<AduanDetailReceipt> {
                         ),
                       ),
                       Text(
-                        _getStatusLabel(aduan?['status']),
+                        aduan?['pegawaiName'] ?? 'N/A',
                         style: const TextStyle(
+                          fontSize: 16,
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      const Text(
+                        'Hasil:',
+                        style: TextStyle(
                           fontFamily: 'Courier',
                           fontWeight: FontWeight.bold,
                           fontSize: 18,
                         ),
                       ),
+                      Text(
+                        aduan?['hasil'] ?? 'N/A',
+                        style: const TextStyle(
+                          fontSize: 16,
+                        ),
+                      ),
+                      const SizedBox(height: 8),
                     ],
-                  ),
-                  const SizedBox(height: 8),
-                  const Text(
-                    'Created At:',
-                    style: TextStyle(
-                      fontFamily: 'Courier',
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18,
-                    ),
-                  ),
-                  Text(
-                    _formatCreatedAt(aduan?['created_at']),
-                    style: const TextStyle(
-                      fontSize: 16,
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                  Center(
-                    child: Column(
+                    const SizedBox(height: 8),
+                    const Divider(thickness: 2, color: Colors.black),
+                    const SizedBox(height: 8),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        if (_shouldShowCancelButton(aduan?['status']) ||
-                            _shouldShowTerimaButton(aduan?['status']) ||
-                            _shouldShowSelesaikanOption(aduan?['status']))
-                          Column(
-                            children: [
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  if (_shouldShowCancelButton(aduan?['status']))
-                                    ElevatedButton(
-                                      onPressed: _cancelAduan,
-                                      child: const Text('Batal Aduan'),
-                                      style: ElevatedButton.styleFrom(
-                                        foregroundColor: Colors.white,
-                                        backgroundColor: Colors.redAccent,
-                                      ),
-                                    ),
-                                  if (_shouldShowTerimaButton(aduan?['status']))
-                                    ElevatedButton(
-                                      onPressed: _terimaAduan,
-                                      child: const Text('Terima Aduan'),
-                                      style: ElevatedButton.styleFrom(
-                                        foregroundColor: Colors.white,
-                                        backgroundColor: Colors.greenAccent,
-                                      ),
-                                    ),
-                                ],
-                              ),
-                              if (_shouldShowSelesaikanOption(aduan?['status']))
-                                Column(
-                                  children: [
-                                    TextField(
-                                      controller: hasilController,
-                                      style: const TextStyle(
-                                        color: Colors.white,
-                                      ),
-                                      decoration: const InputDecoration(
-                                        labelText: 'Hasil',
-                                        labelStyle: TextStyle(
-                                          color: Colors.white,
-                                        ),
-                                        border: OutlineInputBorder(),
-                                      ),
-                                    ),
-                                    const SizedBox(height: 16),
-                                    ElevatedButton(
-                                      onPressed: _selesaikanAduan,
-                                      child: const Text('Selesaikan'),
-                                      style: ElevatedButton.styleFrom(
-                                        foregroundColor: Colors.black,
-                                        backgroundColor: Colors.lightBlue[100],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                            ],
-                          )
-                        else
-                          const Center(
-                            child: Text(
-                              'Thank You!',
-                              style: TextStyle(
-                                fontFamily: 'Courier',
-                                fontWeight: FontWeight.bold,
-                                fontSize: 24,
-                              ),
-                            ),
+                        const Text(
+                          'Status:',
+                          style: TextStyle(
+                            fontFamily: 'Courier',
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18,
                           ),
+                        ),
+                        Text(
+                          _getStatusLabel(aduan?['status']),
+                          style: const TextStyle(
+                            fontFamily: 'Courier',
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18,
+                          ),
+                        ),
                       ],
                     ),
-                  ),
-                  const SizedBox(height: 8),
-                  const Divider(thickness: 2, color: Colors.black),
-                ],
+                    const SizedBox(height: 8),
+                    const Text(
+                      'Created At:',
+                      style: TextStyle(
+                        fontFamily: 'Courier',
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                      ),
+                    ),
+                    Text(
+                      _formatCreatedAt(aduan?['created_at']),
+                      style: const TextStyle(
+                        fontSize: 16,
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    Center(
+                      child: Column(
+                        children: [
+                          if (_shouldShowCancelButton(aduan?['status']) ||
+                              _shouldShowTerimaButton(aduan?['status']) ||
+                              _shouldShowSelesaikanOption(aduan?['status']))
+                            Column(
+                              children: [
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    if (_shouldShowCancelButton(
+                                        aduan?['status']))
+                                      ElevatedButton(
+                                        onPressed: _cancelAduan,
+                                        child: const Text('Batal Aduan'),
+                                        style: ElevatedButton.styleFrom(
+                                          foregroundColor: Colors.white,
+                                          backgroundColor: Colors.redAccent,
+                                        ),
+                                      ),
+                                    if (_shouldShowTerimaButton(
+                                        aduan?['status']))
+                                      ElevatedButton(
+                                        onPressed: _terimaAduan,
+                                        child: const Text('Terima Aduan'),
+                                        style: ElevatedButton.styleFrom(
+                                          foregroundColor: Colors.white,
+                                          backgroundColor: Colors.greenAccent,
+                                        ),
+                                      ),
+                                  ],
+                                ),
+                                if (_shouldShowSelesaikanOption(
+                                    aduan?['status']))
+                                  Column(
+                                    children: [
+                                      TextField(
+                                        controller: hasilController,
+                                        style: const TextStyle(
+                                          color: Colors.white,
+                                        ),
+                                        decoration: const InputDecoration(
+                                          labelText: 'Hasil',
+                                          labelStyle: TextStyle(
+                                            color: Colors.white,
+                                          ),
+                                          border: OutlineInputBorder(),
+                                        ),
+                                      ),
+                                      const SizedBox(height: 16),
+                                      ElevatedButton(
+                                        onPressed: _selesaikanAduan,
+                                        child: const Text('Selesaikan'),
+                                        style: ElevatedButton.styleFrom(
+                                          foregroundColor: Colors.black,
+                                          backgroundColor:
+                                              Colors.lightBlue[100],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                              ],
+                            )
+                          else
+                            const Center(
+                              child: Text(
+                                'Thank You!',
+                                style: TextStyle(
+                                  fontFamily: 'Courier',
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 24,
+                                ),
+                              ),
+                            ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    const Divider(thickness: 2, color: Colors.black),
+                  ],
+                ),
               ),
             ),
     );

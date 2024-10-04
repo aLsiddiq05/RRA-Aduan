@@ -94,7 +94,7 @@ class _AllAduanState extends State<AllAduan> {
   void _refreshAduanData() {
     setState(() {
       _aduans.clear();
-      _currentPage = 1; 
+      _currentPage = 1;
       _hasMoreData = true;
     });
 
@@ -207,10 +207,7 @@ class _AllAduanState extends State<AllAduan> {
                     child: GestureDetector(
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Text("Batal"),
-                          Text(batal.toString())
-                        ],
+                        children: [const Text("Batal"), Text(batal.toString())],
                       ),
                       onTap: () => resetnReload(4),
                     ),
@@ -253,50 +250,49 @@ class _AllAduanState extends State<AllAduan> {
                                 cardColor = Colors.white;
                             }
                             return GestureDetector(
-                              onTap: () async {
-                                await showDialog(
-                                  context: context,
-                                  builder: (context) {
-                                    return AduanDetailReceipt(
-                                      aduanId: aduan.id.toString(),
-                                      onAduanCanceled: _refreshAduanData,
-                                    );
-                                  },
-                                );
-                              },
-                              child: Card(
-                                color: cardColor,
-                                child: ListTile(
-                                  title: Text(aduan.title),
-                                  subtitle: Text(aduan.content),
-                                  trailing: Column(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.center,
-                                    children: [
-                                      Text(DateFormat('dd/MM/yyyy').format(
-                                          DateTime.fromMillisecondsSinceEpoch(
-                                              aduan.createdAt * 1000))),
-                                      Text(DateFormat('hh:mm a').format(
-                                          DateTime.fromMillisecondsSinceEpoch(
-                                              aduan.createdAt * 1000))),
-                                    ],
+                                onTap: () async {
+                                  await showDialog(
+                                    context: context,
+                                    builder: (context) {
+                                      return AduanDetailReceipt(
+                                        aduanId: aduan.id.toString(),
+                                        onAduanCanceled: _refreshAduanData,
+                                      );
+                                    },
+                                  );
+                                },
+                                child: Card(
+                                  color: cardColor,
+                                  child: ListTile(
+                                    title: Text(aduan.title),
+                                    subtitle: Text(aduan.content),
+                                    trailing: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Text(DateFormat('dd/MM/yyyy').format(
+                                            DateTime.fromMillisecondsSinceEpoch(
+                                                aduan.createdAt * 1000))),
+                                        Text(DateFormat('hh:mm a').format(
+                                            DateTime.fromMillisecondsSinceEpoch(
+                                                aduan.createdAt * 1000))),
+                                      ],
+                                    ),
                                   ),
-                                ),
-                              ));
-                            },
-                          )),
+                                ));
+                          },
+                        )),
             ],
           ),
-            if (_isLoading)
-              const Center(
-                child: CircularProgressIndicator(),
-              ),
-            if (_hasMoreData && !_isLoading)
-              ElevatedButton(
-                onPressed: _loadMyAduan,
-                child: const Text('Load More'),
-              ),
-          
+          if (_isLoading)
+            const Center(
+              child: CircularProgressIndicator(),
+            ),
+          if (_hasMoreData && !_isLoading)
+            ElevatedButton(
+              onPressed: _loadMyAduan,
+              child: const Text('Load More'),
+            ),
         ],
       ),
     );
