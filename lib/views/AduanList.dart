@@ -49,11 +49,6 @@ class _AduanListPageState extends State<AduanListPage> {
     }
   }
 
-  // Define the _refreshAduanData function
-  void _refreshAduanData() {
-    fetchAduans(); // Refresh the aduan list
-  }
-
   void changePage(int page) {
     if (page >= 1 && page <= totalPages && !isLoading) {
       setState(() {
@@ -96,7 +91,10 @@ class _AduanListPageState extends State<AduanListPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const CustomAppBar(title: 'Aduan Pengguna',backgroundColor: Colors.teal,),
+      appBar: const CustomAppBar(
+        title: 'Aduan Pengguna',
+        backgroundColor: Colors.teal,
+      ),
       body: Padding(
         padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 16.0),
         child: Column(
@@ -116,7 +114,7 @@ class _AduanListPageState extends State<AduanListPage> {
                                 builder: (context) {
                                   return AduanDetailReceipt(
                                     aduanId: aduan['id'].toString(),
-                                    onAduanCanceled: _refreshAduanData,
+                                    onAduanCanceled: fetchAduans,
                                   );
                                 },
                               );
