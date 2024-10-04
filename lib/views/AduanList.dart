@@ -96,7 +96,7 @@ class _AduanListPageState extends State<AduanListPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const CustomAppBar(title: 'Aduan Pengguna'),
+      appBar: const CustomAppBar(title: 'Aduan Pengguna',backgroundColor: Colors.teal,),
       body: Padding(
         padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 16.0),
         child: Column(

@@ -71,7 +71,7 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: CustomAppBar(
           title: "Respons Rakyat",
-          backgroundColor: const Color(0xFF0D47A1),
+          backgroundColor: _roleId == 3 ? const Color(0xFF0D47A1) : Colors.teal,
           actions: [
             IconButton(
                 onPressed: () {
@@ -127,7 +127,7 @@ class _HomePageState extends State<HomePage> {
           showSelectedLabels: false,
           showUnselectedLabels: false,
           type: BottomNavigationBarType.fixed,
-          backgroundColor: Colors.blue[900],
+          backgroundColor: _roleId == 3 ? Colors.blue[900] : Colors.teal,
           fixedColor: Colors.white,
           currentIndex: _selectedIndex,
           onTap: _onItemTapped,
