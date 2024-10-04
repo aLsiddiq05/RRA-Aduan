@@ -236,7 +236,8 @@ class _AduanDetailReceiptState extends State<AduanDetailReceipt> {
                     ),
                   ),
                   const SizedBox(height: 16),
-                  if (_shouldShowButton(aduan?['status']))
+                  if (_shouldShowCancelButton(aduan?['status']) ||
+                      _shouldShowTerimaButton(aduan?['status']))
                     Center(
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment
@@ -343,7 +344,7 @@ class _AduanDetailReceiptState extends State<AduanDetailReceipt> {
     }
   }
 
-  bool _shouldShowButton(int? status) {
+  bool _shouldShowCancelButton(int? status) {
     // Show button for Pengadu (roleId = 3) when status is 1 or 2
     if (roleId == '3' && (status == 1 || status == 2)) {
       return true;
@@ -357,6 +358,14 @@ class _AduanDetailReceiptState extends State<AduanDetailReceipt> {
 
   bool _shouldShowSelesaikanOption(int? status) {
     if (roleId == '2' && status == 2) {
+      return true;
+    }
+    return false;
+  }
+
+  bool _shouldShowTerimaButton(int? status) {
+    // Show button for Pegawai (roleId = 2) only when status is 1
+    if (roleId == '2' && status == 1) {
       return true;
     }
     return false;
