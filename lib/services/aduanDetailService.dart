@@ -80,4 +80,67 @@ class AduanDetailService {
       return false;
     }
   }
+
+  Future<bool> selesaikanAduan(String aduanId, String hasil) async {
+    String? token = await storage.read(key: 'token');
+    String? roleId = await storage.read(key: 'roleId');
+
+    if (token == null || roleId == null) {
+      throw Exception('User is not authenticated');
+    }
+
+    try {
+      String url = '$baseUrl/pegawai/selesai/$aduanId';
+
+      final response = await http.put(
+        Uri.parse(url),
+        headers: {
+          'Authorization': 'Bearer $token',
+          'Content-Type': 'application/json',
+        },
+        body: jsonEncode({'hasil': hasil}),
+      );
+
+      if (response.statusCode == 200) {
+        return true;
+      } else {
+        print('Failed to complete aduan: ${response.reasonPhrase}');
+        return false;
+      }
+    } catch (e) {
+      print('Error completing aduan: $e');
+      return false;
+    }
+  }
+
+  Future<bool> terimaAduan(String aduanId) async {
+    String? token = await storage.read(key: 'token');
+    String? roleId = await storage.read(key: 'roleId');
+
+    if (token == null || roleId == null) {
+      throw Exception('User is not authenticated');
+    }
+
+    try {
+      String url = '$baseUrl/pegawai/terima/$aduanId';
+
+      final response = await http.put(
+        Uri.parse(url),
+        headers: {
+          'Authorization': 'Bearer $token',
+          'Content-Type': 'application/json',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        return true;
+      } else {
+        print('Failed to terima aduan: ${response.reasonPhrase}');
+        return false;
+      }
+    } catch (e) {
+      print('Error terima aduan: $e');
+      return false;
+    }
+  }
 }

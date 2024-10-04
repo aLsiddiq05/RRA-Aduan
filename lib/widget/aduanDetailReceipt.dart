@@ -23,6 +23,7 @@ class _AduanDetailReceiptState extends State<AduanDetailReceipt> {
   late AduanDetailService aduanDetailService;
   String? roleId; // Role ID to control button display logic
   final storage = const FlutterSecureStorage(); // Secure storage instance
+  final TextEditingController hasilController = TextEditingController();
 
   @override
   void initState() {
@@ -65,6 +66,45 @@ class _AduanDetailReceiptState extends State<AduanDetailReceipt> {
         );
       }
     });
+  }
+
+  void _terimaAduan() {
+    aduanDetailService.terimaAduan(widget.aduanId).then((success) {
+      if (success) {
+        widget.onAduanCanceled();
+        Navigator.of(context).pop();
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Terima Aduan.')),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Aduan tidak boleh diterima.')),
+        );
+      }
+    });
+  }
+
+  void _selesaikanAduan() {
+    final hasil = hasilController.text;
+    if (hasil.isNotEmpty) {
+      aduanDetailService.selesaikanAduan(widget.aduanId, hasil).then((success) {
+        if (success) {
+          widget.onAduanCanceled();
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Aduan has been completed.')),
+          );
+          Navigator.of(context).pop();
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Failed to complete Aduan.')),
+          );
+        }
+      });
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Masukkan Hasil.')),
+      );
+    }
   }
 
   @override
@@ -196,16 +236,57 @@ class _AduanDetailReceiptState extends State<AduanDetailReceipt> {
                     ),
                   ),
                   const SizedBox(height: 16),
-                  if (_shouldShowBatalAduanButton(aduan?['status']))
+                  if (_shouldShowButton(aduan?['status']))
                     Center(
-                      child: ElevatedButton(
-                        onPressed: _cancelAduan,
-                        child: const Text('Batal Aduan'),
-                        style: ElevatedButton.styleFrom(
-                          foregroundColor: Colors.white,
-                          backgroundColor: Colors.redAccent,
-                        ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment
+                            .spaceEvenly, // Spaces the buttons evenly
+                        children: [
+                          ElevatedButton(
+                            onPressed: _cancelAduan,
+                            child: const Text('Batal Aduan'),
+                            style: ElevatedButton.styleFrom(
+                              foregroundColor: Colors.white,
+                              backgroundColor: Colors.redAccent,
+                            ),
+                          ),
+                          ElevatedButton(
+                            onPressed: _terimaAduan, // New button action
+                            child: const Text('Terima Aduan'),
+                            style: ElevatedButton.styleFrom(
+                              foregroundColor: Colors.white,
+                              backgroundColor: Colors.greenAccent,
+                            ),
+                          ),
+                        ],
                       ),
+                    )
+                  else if (_shouldShowSelesaikanOption(aduan?['status']))
+                    Column(
+                      children: [
+                        TextField(
+                          controller: hasilController,
+                          style: const TextStyle(
+                            color: Colors.white, // White text color
+                          ),
+                          decoration: const InputDecoration(
+                            labelText: 'Hasil',
+                            labelStyle: const TextStyle(
+                              color: Colors.white, // White label color
+                            ),
+                            border: OutlineInputBorder(),
+                          ),
+                        ),
+                        const SizedBox(height: 16),
+                        ElevatedButton(
+                          onPressed: _selesaikanAduan,
+                          child: const Text('Selesaikan'),
+                          style: ElevatedButton.styleFrom(
+                            foregroundColor: Colors.black,
+                            backgroundColor: Colors.lightBlue[100],
+                          ),
+                        ),
+                      ],
                     )
                   else
                     const Center(
@@ -262,13 +343,20 @@ class _AduanDetailReceiptState extends State<AduanDetailReceipt> {
     }
   }
 
-  bool _shouldShowBatalAduanButton(int? status) {
+  bool _shouldShowButton(int? status) {
     // Show button for Pengadu (roleId = 3) when status is 1 or 2
     if (roleId == '3' && (status == 1 || status == 2)) {
       return true;
     }
     // Show button for Pegawai (roleId = 2) only when status is 1
     if (roleId == '2' && status == 1) {
+      return true;
+    }
+    return false;
+  }
+
+  bool _shouldShowSelesaikanOption(int? status) {
+    if (roleId == '2' && status == 2) {
       return true;
     }
     return false;
