@@ -21,6 +21,7 @@ class _AllAduanState extends State<AllAduan> {
   int batal = 0;
   bool _isLoading = false;
   bool _hasMoreData = true;
+  late double mWidth;
 
   @override
   void initState() {
@@ -116,102 +117,101 @@ class _AllAduanState extends State<AllAduan> {
 
   @override
   Widget build(BuildContext context) {
+    mWidth = MediaQuery.of(context).size.width;
     return Container(
+      // color: Colors.black,
+      width: mWidth,
+      margin: EdgeInsets.all(mWidth * 0.02),
       child: Column(
         children: <Widget>[
           // status
-          Container(
-            child: Padding(
-              padding: const EdgeInsets.all(10),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  SizedBox(
-                    width: 90,
-                    height: 80,
-                    child: Card(
-                      color: const Color.fromARGB(255, 169, 190, 200),
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: GestureDetector(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [Text("Terima"), Text(terima.toString())],
-                          ),
-                          onTap: () {
-                            resetnReload(1);
-                          },
-                        ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SizedBox(
+                width: 90,
+                height: 80,
+                child: Card(
+                  color: const Color.fromARGB(255, 169, 190, 200),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: GestureDetector(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [Text("Terima"), Text(terima.toString())],
                       ),
+                      onTap: () {
+                        resetnReload(1);
+                      },
                     ),
                   ),
-                  SizedBox(
-                    width: 90,
-                    height: 80,
-                    child: Card(
-                      color: Colors.blueAccent,
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: GestureDetector(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              const Text("Siasatan"),
-                              Text(siasatan.toString())
-                            ],
-                          ),
-                          onTap: () {
-                            resetnReload(2);
-                          },
-                        ),
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    width: 90,
-                    height: 80,
-                    child: Card(
-                      color: Colors.green,
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: GestureDetector(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              const Text("Selesai"),
-                              Text(selesai.toString())
-                            ],
-                          ),
-                          onTap: () {
-                            resetnReload(3);
-                          },
-                        ),
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    width: 90,
-                    height: 80,
-                    child: Card(
-                      color: Colors.redAccent,
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: GestureDetector(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              const Text("Batal"),
-                              Text(batal.toString())
-                            ],
-                          ),
-                          onTap: () => resetnReload(4),
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
+                ),
               ),
-            ),
+              SizedBox(
+                width: 90,
+                height: 80,
+                child: Card(
+                  color: Colors.blueAccent,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: GestureDetector(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Text("Siasatan"),
+                          Text(siasatan.toString())
+                        ],
+                      ),
+                      onTap: () {
+                        resetnReload(2);
+                      },
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(
+                width: 90,
+                height: 80,
+                child: Card(
+                  color: Colors.green,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: GestureDetector(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Text("Selesai"),
+                          Text(selesai.toString())
+                        ],
+                      ),
+                      onTap: () {
+                        resetnReload(3);
+                      },
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(
+                width: 90,
+                height: 80,
+                child: Card(
+                  color: Colors.redAccent,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: GestureDetector(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Text("Batal"),
+                          Text(batal.toString())
+                        ],
+                      ),
+                      onTap: () => resetnReload(4),
+                    ),
+                  ),
+                ),
+              ),
+            ],
           ),
 
           SizedBox(
@@ -219,79 +219,76 @@ class _AllAduanState extends State<AllAduan> {
           ),
 
           // allAduans
-          Padding(
-            padding: const EdgeInsets.all(10),
-            child: Column(
-              children: <Widget>[
-                SizedBox(
-                    height: 400,
-                    child: _aduans.isEmpty && !_isLoading
-                        ? Center(child: Text('No Aduan Available.'))
-                        : ListView.builder(
-                            itemCount: _aduans.length,
-                            itemBuilder: (context, index) {
-                              final aduan = _aduans[index];
-                              Color cardColor;
-                              switch (aduan.status) {
-                                case 1:
-                                  cardColor = Colors.grey;
-                                  break;
-                                case 2:
-                                  cardColor = Colors.blueAccent;
-                                  break;
-                                case 3:
-                                  cardColor = Colors.greenAccent;
-                                  break;
-                                case 4:
-                                  cardColor = Colors.redAccent;
-                                  break;
-                                default:
-                                  cardColor = Colors.white;
-                              }
-                              return GestureDetector(
-                                onTap: () async {
-                                  await showDialog(
-                                    context: context,
-                                    builder: (context) {
-                                      return AduanDetailReceipt(
-                                        aduanId: aduan.id.toString(),
-                                        onAduanCanceled: _refreshAduanData,
-                                      );
-                                    },
-                                  );
-                                },
-                                child: Card(
-                                  color: cardColor,
-                                  child: ListTile(
-                                    title: Text(aduan.title),
-                                    subtitle: Text(aduan.content),
-                                    trailing: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Text(DateFormat('dd/MM/yyyy').format(
-                                            DateTime.fromMillisecondsSinceEpoch(
-                                                aduan.createdAt * 1000))),
-                                        Text(DateFormat('hh:mm a').format(
-                                            DateTime.fromMillisecondsSinceEpoch(
-                                                aduan.createdAt * 1000))),
-                                      ],
-                                    ),
-                                  ),
-                                ));
+          Column(
+            children: <Widget>[
+              SizedBox(
+                  height: 400,
+                  child: _aduans.isEmpty && !_isLoading
+                      ? Center(child: Text('No Aduan Available.'))
+                      : ListView.builder(
+                          itemCount: _aduans.length,
+                          itemBuilder: (context, index) {
+                            final aduan = _aduans[index];
+                            Color cardColor;
+                            switch (aduan.status) {
+                              case 1:
+                                cardColor = Colors.grey;
+                                break;
+                              case 2:
+                                cardColor = Colors.blueAccent;
+                                break;
+                              case 3:
+                                cardColor = Colors.greenAccent;
+                                break;
+                              case 4:
+                                cardColor = Colors.redAccent;
+                                break;
+                              default:
+                                cardColor = Colors.white;
+                            }
+                            return GestureDetector(
+                              onTap: () async {
+                                await showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    return AduanDetailReceipt(
+                                      aduanId: aduan.id.toString(),
+                                      onAduanCanceled: _refreshAduanData,
+                                    );
+                                  },
+                                );
                               },
-                            )),
-                  if (_isLoading)
-                    const Center(
-                      child: CircularProgressIndicator(),
-                    ),
-                  if (_hasMoreData && !_isLoading)
-                    ElevatedButton(
-                      onPressed: _loadMyAduan,
-                      child: const Text('Load More'),
-                    ),
-                ],
-              ),
+                              child: Card(
+                                color: cardColor,
+                                child: ListTile(
+                                  title: Text(aduan.title),
+                                  subtitle: Text(aduan.content),
+                                  trailing: Column(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.center,
+                                    children: [
+                                      Text(DateFormat('dd/MM/yyyy').format(
+                                          DateTime.fromMillisecondsSinceEpoch(
+                                              aduan.createdAt * 1000))),
+                                      Text(DateFormat('hh:mm a').format(
+                                          DateTime.fromMillisecondsSinceEpoch(
+                                              aduan.createdAt * 1000))),
+                                    ],
+                                  ),
+                                ),
+                              ));
+                            },
+                          )),
+                if (_isLoading)
+                  const Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                if (_hasMoreData && !_isLoading)
+                  ElevatedButton(
+                    onPressed: _loadMyAduan,
+                    child: const Text('Load More'),
+                  ),
+              ],
             ),
           
         ],
