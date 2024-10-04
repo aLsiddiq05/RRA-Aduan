@@ -236,70 +236,81 @@ class _AduanDetailReceiptState extends State<AduanDetailReceipt> {
                     ),
                   ),
                   const SizedBox(height: 16),
-                  if (_shouldShowCancelButton(aduan?['status']) &&
-                      _shouldShowTerimaButton(aduan?['status']))
-                    Center(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment
-                            .spaceEvenly, // Spaces the buttons evenly
-                        children: [
-                          ElevatedButton(
-                            onPressed: _cancelAduan,
-                            child: const Text('Batal Aduan'),
-                            style: ElevatedButton.styleFrom(
-                              foregroundColor: Colors.white,
-                              backgroundColor: Colors.redAccent,
-                            ),
-                          ),
-                          ElevatedButton(
-                            onPressed: _terimaAduan, // New button action
-                            child: const Text('Terima Aduan'),
-                            style: ElevatedButton.styleFrom(
-                              foregroundColor: Colors.white,
-                              backgroundColor: Colors.greenAccent,
-                            ),
-                          ),
-                        ],
-                      ),
-                    )
-                  else if (_shouldShowSelesaikanOption(aduan?['status']))
-                    Column(
+                  Center(
+                    child: Column(
                       children: [
-                        TextField(
-                          controller: hasilController,
-                          style: const TextStyle(
-                            color: Colors.white, // White text color
-                          ),
-                          decoration: const InputDecoration(
-                            labelText: 'Hasil',
-                            labelStyle: const TextStyle(
-                              color: Colors.white, // White label color
+                        if (_shouldShowCancelButton(aduan?['status']) ||
+                            _shouldShowTerimaButton(aduan?['status']) ||
+                            _shouldShowSelesaikanOption(aduan?['status']))
+                          Column(
+                            children: [
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  if (_shouldShowCancelButton(aduan?['status']))
+                                    ElevatedButton(
+                                      onPressed: _cancelAduan,
+                                      child: const Text('Batal Aduan'),
+                                      style: ElevatedButton.styleFrom(
+                                        foregroundColor: Colors.white,
+                                        backgroundColor: Colors.redAccent,
+                                      ),
+                                    ),
+                                  if (_shouldShowTerimaButton(aduan?['status']))
+                                    ElevatedButton(
+                                      onPressed: _terimaAduan,
+                                      child: const Text('Terima Aduan'),
+                                      style: ElevatedButton.styleFrom(
+                                        foregroundColor: Colors.white,
+                                        backgroundColor: Colors.greenAccent,
+                                      ),
+                                    ),
+                                ],
+                              ),
+                              if (_shouldShowSelesaikanOption(aduan?['status']))
+                                Column(
+                                  children: [
+                                    TextField(
+                                      controller: hasilController,
+                                      style: const TextStyle(
+                                        color: Colors.white,
+                                      ),
+                                      decoration: const InputDecoration(
+                                        labelText: 'Hasil',
+                                        labelStyle: TextStyle(
+                                          color: Colors.white,
+                                        ),
+                                        border: OutlineInputBorder(),
+                                      ),
+                                    ),
+                                    const SizedBox(height: 16),
+                                    ElevatedButton(
+                                      onPressed: _selesaikanAduan,
+                                      child: const Text('Selesaikan'),
+                                      style: ElevatedButton.styleFrom(
+                                        foregroundColor: Colors.black,
+                                        backgroundColor: Colors.lightBlue[100],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                            ],
+                          )
+                        else
+                          const Center(
+                            child: Text(
+                              'Thank You!',
+                              style: TextStyle(
+                                fontFamily: 'Courier',
+                                fontWeight: FontWeight.bold,
+                                fontSize: 24,
+                              ),
                             ),
-                            border: OutlineInputBorder(),
                           ),
-                        ),
-                        const SizedBox(height: 16),
-                        ElevatedButton(
-                          onPressed: _selesaikanAduan,
-                          child: const Text('Selesaikan'),
-                          style: ElevatedButton.styleFrom(
-                            foregroundColor: Colors.black,
-                            backgroundColor: Colors.lightBlue[100],
-                          ),
-                        ),
                       ],
-                    )
-                  else
-                    const Center(
-                      child: Text(
-                        'Thank You!',
-                        style: TextStyle(
-                          fontFamily: 'Courier',
-                          fontWeight: FontWeight.bold,
-                          fontSize: 24,
-                        ),
-                      ),
                     ),
+                  ),
                   const SizedBox(height: 8),
                   const Divider(thickness: 2, color: Colors.black),
                 ],
@@ -345,15 +356,9 @@ class _AduanDetailReceiptState extends State<AduanDetailReceipt> {
   }
 
   bool _shouldShowCancelButton(int? status) {
-    // Show button for Pengadu (roleId = 3) when status is 1 or 2
-    if (roleId == '3' && (status == 1 || status == 2)) {
-      return true;
-    }
-    // Show button for Pegawai (roleId = 2) only when status is 1
-    if (roleId == '2' && status == 1) {
-      return true;
-    }
-    return false;
+    // Show Cancel button for Pengadu (roleId == '3') and Pegawai (roleId == '2') based on the status
+    return (roleId == '3' && (status == 1 || status == 2)) ||
+        (roleId == '2' && status == 1);
   }
 
   bool _shouldShowSelesaikanOption(int? status) {
@@ -364,10 +369,7 @@ class _AduanDetailReceiptState extends State<AduanDetailReceipt> {
   }
 
   bool _shouldShowTerimaButton(int? status) {
-    // Show button for Pegawai (roleId = 2) only when status is 1
-    if (roleId == '2' && status == 1) {
-      return true;
-    }
-    return false;
+    // Show Terima button only for Pegawai (roleId == '2') when status == 1
+    return roleId == '2' && status == 1;
   }
 }
