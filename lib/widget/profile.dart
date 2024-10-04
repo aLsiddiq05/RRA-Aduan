@@ -25,8 +25,8 @@ class _ProfilState extends State<Profil> {
   @override
   void initState() {
     super.initState();
-    getProfile();
     getRoleId();
+    getProfile();
   }
 
   Future<void> getProfile() async {
@@ -34,19 +34,23 @@ class _ProfilState extends State<Profil> {
     final res = await pack.getMyProfile();
 
     if (res != null) {
-      print('getProfile - update profile page success');
+      print('getProfile - update profile page success $res');
       setState(() {
         oName = res['name'];
         oEmail = res['email'];
-        noic = res['id_no'];
 
-        
+        if (_roleId == '3') {
+          noic = res['id_no'];
+        }
+
         _name.text = oName; 
         _email.text = oEmail; 
         _idNo.text = noic;
       });
     }
   }
+
+  
 
   Future<void> updateProfile(String nameN, String emailN, String idNoN) async {
     UpdateProfile pack = UpdateProfile();

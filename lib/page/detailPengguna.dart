@@ -1,6 +1,7 @@
 import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:intl/intl.dart';
 import 'package:rra_mobile/services/detailPenggunaService.dart';
 import 'package:rra_mobile/widget/aduanDetailReceipt.dart';
 import 'package:rra_mobile/widget/customappbar.dart';
@@ -19,10 +20,10 @@ class _DetailPenggunaState extends State<DetailPengguna> {
   late double mWidth;
   String name = '';
   String ic = '';
-  String email ='';
+  String email = '';
   List<Aduan> _aduan = [];
   int? totalAduan;
- 
+
   @override
   void initState() {
     super.initState();
@@ -44,7 +45,7 @@ class _DetailPenggunaState extends State<DetailPengguna> {
         totalAduan = res.total;
         _aduan.addAll(res.results);
       });
-    }else {
+    } else {
       print('Failed to load profile');
     }
   }
@@ -57,7 +58,10 @@ class _DetailPenggunaState extends State<DetailPengguna> {
   Widget build(BuildContext context) {
     mWidth = MediaQuery.of(context).size.width;
     return Scaffold(
-      appBar: const CustomAppBar(title: 'Detail Pengguna',backgroundColor: Colors.teal,),
+      appBar: const CustomAppBar(
+        title: 'Detail Pengguna',
+        backgroundColor: Colors.teal,
+      ),
       body: Container(
         margin: EdgeInsets.all(mWidth * 0.03),
         // color: Colors.teal,
@@ -69,23 +73,38 @@ class _DetailPenggunaState extends State<DetailPengguna> {
                 color: Colors.teal[200],
                 child: ListTile(
                   leading: Icon(Icons.person),
-                  title:Text('Profil'),
+                  title: Text('Profil'),
                   subtitle: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [Text(name, style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),),
-                      Text(ic, style: TextStyle(fontSize: 15),),
-                      Text(email, style: TextStyle(fontSize: 15),)
+                    children: [
+                      Text(
+                        name,
+                        style: TextStyle(
+                            fontSize: 15, fontWeight: FontWeight.bold),
+                      ),
+                      Text(
+                        ic,
+                        style: TextStyle(fontSize: 15),
+                      ),
+                      Text(
+                        email,
+                        style: TextStyle(fontSize: 15),
+                      )
                     ],
                   ),
                 ),
               ),
-              const SizedBox(height: 15,),
+              const SizedBox(
+                height: 15,
+              ),
               const DottedLine(
                 alignment: WrapAlignment.center,
                 dashLength: 10,
                 dashGapLength: 10,
               ),
-              const SizedBox(height: 15,),
+              const SizedBox(
+                height: 15,
+              ),
 
               //aduans
               Expanded(
@@ -94,38 +113,74 @@ class _DetailPenggunaState extends State<DetailPengguna> {
                   itemCount: _aduan.length,
                   itemBuilder: (context, index) {
                     final aduan = _aduan[index];
+                    Color cardColor;
+                    var statusText;
+                    switch (aduan.status) {
+                      case 1:
+                        cardColor = Colors.grey;
+                        statusText = 'Terima';
+                        break;
+                      case 2:
+                        cardColor = Colors.blueAccent;
+                        statusText = 'Dalam Siasatan';
+                        break;
+                      case 3:
+                        cardColor = Colors.greenAccent;
+                        statusText = 'Selesai';
+                        break;
+                      case 4:
+                        cardColor = Colors.redAccent;
+                        statusText = 'Batal';
+                        break;
+                      default:
+                        cardColor = Colors.white;
+                        statusText = 'null';
+                    }
                     return Card(
                       elevation: 10,
-                    child: GestureDetector(
-                      onTap: () {
-                        showDialog(context: context, builder:(context) {
-                          return AduanDetailReceipt(aduanId: aduan.id.toString(), onAduanCanceled: getProfileAduan);
-                        },);
-                        
-                      },
-                      child: ListTile(
-                        title: Text(aduan.title),
-                        subtitle: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(aduan.content),
-                            SizedBox(height: 5,),
-                            Card(
-                              color: Colors.greenAccent,
-                              child: Padding(padding: EdgeInsets.all(4), child: Text(aduan.status.toString()),),
-                            )
-                          ],
-                        ),
-                        trailing: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text('28/12/2024'),
-                            Text('12:54 PM')
-                          ],
+                      child: GestureDetector(
+                        onTap: () {
+                          showDialog(
+                            context: context,
+                            builder: (context) {
+                              return AduanDetailReceipt(
+                                  aduanId: aduan.id.toString(),
+                                  onAduanCanceled: _refreshAduanData);
+                            },
+                          );
+                        },
+                        child: ListTile(
+                          title: Text(aduan.title),
+                          subtitle: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(aduan.content),
+                              SizedBox(
+                                height: 5,
+                              ),
+                              Card(
+                                color: cardColor,
+                                child: Padding(
+                                  padding: EdgeInsets.all(4),
+                                  child: Text(statusText),
+                                ),
+                              )
+                            ],
+                          ),
+                          trailing: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(DateFormat('dd/MM/yyyy').format(
+                                  DateTime.fromMillisecondsSinceEpoch(
+                                      aduan.createdAt * 1000))),
+                              Text(DateFormat('hh:mm a').format(
+                                  DateTime.fromMillisecondsSinceEpoch(
+                                      aduan.createdAt * 1000)))
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                  );
+                    );
                   },
                 ),
               )

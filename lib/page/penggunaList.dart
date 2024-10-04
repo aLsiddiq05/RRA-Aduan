@@ -89,7 +89,7 @@ class _PenggunaListState extends State<PenggunaList> {
                                   Navigator.push(context, MaterialPageRoute(builder: (context) => DetailPengguna(id: pengguna.id,),));
                                 },
                                 child: ListTile(
-                                  title: Text(pengguna.name),
+                                  title: Text(pengguna.name, style: TextStyle(fontWeight: FontWeight.bold),),
                                   subtitle: Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
@@ -100,7 +100,8 @@ class _PenggunaListState extends State<PenggunaList> {
                                   trailing: Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      Text('Bil. Aduan'),
+                                      const Text('Bil. Aduan'),
+                                      const SizedBox(height: 5,),
                                       Text(pengguna.aduanCount.toString())
                                     ],
                                   ),

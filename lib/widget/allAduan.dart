@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:intl/intl.dart';
 import 'package:rra_mobile/services/allAduanService.dart';
 import 'package:rra_mobile/services/getStatusService.dart';
@@ -22,12 +23,17 @@ class _AllAduanState extends State<AllAduan> {
   bool _isLoading = false;
   bool _hasMoreData = true;
   late double mWidth;
+  ScrollController _scrollController = ScrollController();
+
+  //test infinite pagination
 
   @override
   void initState() {
     super.initState();
     _loadMyAduan();
     _getAduanStatus();
+
+    //test infinite pagination
   }
 
   Future<void> _getAduanStatus() async {
@@ -220,7 +226,7 @@ class _AllAduanState extends State<AllAduan> {
 
           // allAduans
           Column(
-            children: <Widget>[
+            children: [
               SizedBox(
                   height: 400,
                   child: _aduans.isEmpty && !_isLoading
@@ -279,17 +285,17 @@ class _AllAduanState extends State<AllAduan> {
                               ));
                             },
                           )),
-                if (_isLoading)
-                  const Center(
-                    child: CircularProgressIndicator(),
-                  ),
-                if (_hasMoreData && !_isLoading)
-                  ElevatedButton(
-                    onPressed: _loadMyAduan,
-                    child: const Text('Load More'),
-                  ),
-              ],
-            ),
+            ],
+          ),
+            if (_isLoading)
+              const Center(
+                child: CircularProgressIndicator(),
+              ),
+            if (_hasMoreData && !_isLoading)
+              ElevatedButton(
+                onPressed: _loadMyAduan,
+                child: const Text('Load More'),
+              ),
           
         ],
       ),
