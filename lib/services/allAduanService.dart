@@ -52,8 +52,8 @@ const storage = FlutterSecureStorage();
 
 Future<AduanResponse?> fetchAduans(int page, int status) async {
   final token = await storage.read(key: 'token');
-  final uri = Uri.http(
-    'https://api-aduan.safwanzarif.dev',
+  final uri = Uri.https(
+    'api-aduan.safwanzarif.dev',
     '/api/aduan/my',
     {
       'page': page.toString(), 'status': status.toString(),

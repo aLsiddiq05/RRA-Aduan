@@ -51,8 +51,8 @@ const storage = FlutterSecureStorage();
 
 Future<PenggunaResponse?> fetchPengguna(int page) async {
   final token = await storage.read(key: 'token');
-  final uri = Uri.http(
-    'https://api-aduan.safwanzarif.dev',
+  final uri = Uri.https(
+    'api-aduan.safwanzarif.dev',
     '/api/pengguna',
      {
       'page': page.toString()
