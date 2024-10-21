@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class ProfilService {
-  final String url = 'http://localhost:3000/api/pengguna/profil';
+  final String url = 'https://api-aduan.safwanzarif.dev/pengguna/profil';
   final storage = const FlutterSecureStorage();
 
   Future<Map<String, dynamic>?> getMyProfile() async {

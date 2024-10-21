@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class RegisterService {
-  final String _url = 'http://localhost:3000/api/pengguna/daftar';
+  final String _url = 'https://api-aduan.safwanzarif.dev/api/pengguna/daftar';
 
   Future<Map<String, dynamic>> register({
     required String noKadPengenalan,

@@ -4,7 +4,7 @@ import 'package:http/http.dart' as http;
 
 Future<Map<String, dynamic>?> loadMyAduanStatus() async {
     final token = await storage.read(key: "token");
-    final uri = Uri.parse('http://localhost:3000/api/aduan/stat');
+    final uri = Uri.parse('https://api-aduan.safwanzarif.dev/api/aduan/stat');
 
     try {
       final res = await http.get(uri, headers: <String, String>{

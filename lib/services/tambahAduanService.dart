@@ -15,7 +15,7 @@ class TambahAduanService {
       }
 
       final response = await http.post(
-        Uri.parse('http://localhost:3000/api/aduan'),
+        Uri.parse('https://api-aduan.safwanzarif.dev/api/aduan'),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer $token',
