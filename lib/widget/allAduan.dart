@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:intl/intl.dart';
 import 'package:rra_mobile/services/allAduanService.dart';
 import 'package:rra_mobile/services/getStatusService.dart';
@@ -23,15 +22,21 @@ class _AllAduanState extends State<AllAduan> {
   bool _isLoading = false;
   bool _hasMoreData = true;
   late double mWidth;
-  ScrollController _scrollController = ScrollController();
+  final controller = ScrollController();
 
   //test infinite pagination
 
   @override
   void initState() {
     super.initState();
+     _getAduanStatus();
     _loadMyAduan();
-    _getAduanStatus();
+    controller.addListener(() {
+      if (controller.position.maxScrollExtent == controller.offset) {
+        _loadMyAduan();
+      }
+    },);
+   
 
     //test infinite pagination
   }
@@ -60,25 +65,27 @@ class _AllAduanState extends State<AllAduan> {
   }
 
   Future<void> _loadMyAduan() async {
-    if (_isLoading || !_hasMoreData) return;
+    if (_isLoading) return;
 
-    setState(() {
-      _isLoading = true;
-    });
+    _isLoading = true;
 
-    final res = await fetchAduans(_currentPage, _activeStatus);
+    const limit = 10;
+    final res = await fetchAduans(_currentPage, _activeStatus, limit);
 
     if (res != null) {
       print('load success');
       print('Current Page: $_currentPage');
       print('Fetched ${res.result.length} aduans');
       // print('Status active:' + widget.status.toString());
+      final List newItems = res.result.toList();
       setState(() {
-        _aduans.addAll(res.result);
-        _currentPage = res.currentPage + 1;
-        if (res.result.isEmpty) {
+        _currentPage++;
+        _isLoading = false;
+
+        if (newItems.length < limit) {
           _hasMoreData = false;
         }
+        _aduans.addAll(res.result);
       });
     } else {
       print('Failed to load aduan');
@@ -89,6 +96,12 @@ class _AllAduanState extends State<AllAduan> {
     setState(() {
       _isLoading = false;
     });
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
   }
 
   void _refreshAduanData() {
@@ -225,10 +238,11 @@ class _AllAduanState extends State<AllAduan> {
           Column(
             children: [
               SizedBox(
-                  height: 400,
+                  height: 500,
                   child: _aduans.isEmpty && !_isLoading
                       ? Center(child: Text('No Aduan Available.'))
                       : ListView.builder(
+                        controller: controller,
                           itemCount: _aduans.length,
                           itemBuilder: (context, index) {
                             final aduan = _aduans[index];
@@ -249,7 +263,9 @@ class _AllAduanState extends State<AllAduan> {
                               default:
                                 cardColor = Colors.white;
                             }
-                            return GestureDetector(
+
+                            if (index < _aduans.length){
+                               return GestureDetector(
                                 onTap: () async {
                                   await showDialog(
                                     context: context,
@@ -280,19 +296,23 @@ class _AllAduanState extends State<AllAduan> {
                                     ),
                                   ),
                                 ));
+                            } else {
+                              return Padding(padding: const EdgeInsets.symmetric(vertical: 32),
+                              child: Center(child: _hasMoreData? const CircularProgressIndicator() : const Text("That's All"),),);
+                            } 
                           },
                         )),
             ],
           ),
-          if (_isLoading)
-            const Center(
-              child: CircularProgressIndicator(),
-            ),
-          if (_hasMoreData && !_isLoading)
-            ElevatedButton(
-              onPressed: _loadMyAduan,
-              child: const Text('Load More'),
-            ),
+          // if (_isLoading)
+          //   const Center(
+          //     child: CircularProgressIndicator(),
+          //   ),
+          // if (_hasMoreData && !_isLoading)
+          //   ElevatedButton(
+          //     onPressed: _loadMyAduan,
+          //     child: const Text('Load More'),
+          //   ),
         ],
       ),
     );
