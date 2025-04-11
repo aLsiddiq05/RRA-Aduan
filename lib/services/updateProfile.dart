@@ -4,7 +4,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 
 class UpdateProfile {
-  final String _url = 'https://api-aduan.safwanzarif.dev/api/profil/update';
+  final String _url = 'https://backend-aduan.amiersiddiq.com/api/profil/update';
   final storage = const FlutterSecureStorage();
 
   Future<Map<String, dynamic>?> updateProfileService(

@@ -76,7 +76,7 @@ const storage = FlutterSecureStorage();
 Future<ProfileResponse?> fetchProfile(int id) async {
   final token = await storage.read(key: 'token');
   final uri = Uri.https(
-    'api-aduan.safwanzarif.dev',
+    'backend-aduan.amiersiddiq.com',
     '/api/pengguna/$id',
   );
 

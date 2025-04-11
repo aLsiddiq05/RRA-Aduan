@@ -3,7 +3,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 
 class LoginService {
-  final String url = 'https://api-aduan.safwanzarif.dev/auth/login';
+  final String url = 'https://backend-aduan.amiersiddiq.com/auth/login';
   final storage = const FlutterSecureStorage();
 
   Future<Map<String, dynamic>?> login(String username, String password) async {

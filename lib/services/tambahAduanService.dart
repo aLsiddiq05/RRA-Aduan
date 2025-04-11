@@ -15,7 +15,7 @@ class TambahAduanService {
       }
 
       final response = await http.post(
-        Uri.parse('https://api-aduan.safwanzarif.dev/api/aduan'),
+        Uri.parse('https://backend-aduan.amiersiddiq.com/api/aduan'),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer $token',
